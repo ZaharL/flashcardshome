@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">MyFlashcards</string>
+    <string name="choose_your_class">CHOOSE YOUR CLASS</string>
+    <string name="password">PASSWORD</string>
+    <string name="e_mail">E-MAIL</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up_now">Sign up now!</string>
+    <string name="no_account">Don\'t have &lt;b&gt;myFlashcards&lt;/b&gt; account?</string>
+    <string name="title_activity_sign_up">Sign Up</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="first_name">FIRST NAME</string>
+    <string name="last_name">LAST NAME</string>
+    <string name="email_address">EMAIL_ADDRESS</string>
+    <string name="confirm_password">CONFIRM PASSWORD</string>
+    <string name="title_activity_edit_card">Edit Card</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+</resources>

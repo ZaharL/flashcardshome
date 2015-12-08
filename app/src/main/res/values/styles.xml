@@ -1,0 +1,62 @@
+<resources>
+
+    <style name="CommonTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="homeAsUpIndicator">@drawable/back_icon</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <!--<item name="android:textColorPrimary">@color/blue_text_bckgnd</item>-->
+        <item name="android:actionBarStyle">@style/FlashCardsActionBar</item>
+        <item name="actionBarStyle">@style/FlashCardsActionBar</item>
+        <item name="colorPrimary">@color/window_background</item>
+    </style>
+
+    <style name="CommonTheme.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <style name="FlashCardsThemeBase" parent="CommonTheme"/>
+
+    <style name="FlashCardsThemeNoTitleBar" parent="CommonTheme.NoActionBar"/>
+
+    <!-- ToolbarDefault style-->
+    <style name="FlashCardsThemeBase.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@drawable/pantone_7546_c</item>
+    </style>
+
+
+    <!--Change this!!!-->
+    <style name="FlashCardsActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/primary_dark</item>
+        <item name="android:titleTextStyle">@style/FlashCardsActionBar.TitleTextStyle</item>
+        <!-- Support library-->
+        <item name="background">@color/primary_dark</item>
+        <item name="titleTextStyle">@style/FlashCardsActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="FlashCardsActionBar.TitleTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/text_color_blue</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+    <!--Change this!!!-->
+
+
+    <style name="CommonTheme.EditText" parent="Theme.AppCompat">
+        <item name="android:textColorHint">@color/hint_higlight</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="FlashCardsThemeBase.EditText" parent="CommonTheme.EditText"/>
+
+    <style name="CommonTheme.EditText.Background" parent="Theme.AppCompat">
+        <item name="android:background">@drawable/pantone_7546_c</item>
+    </style>
+
+    <style name="CommonEditTextBackgroundsStyle" parent="CommonTheme.EditText.Background">
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <style name="FlashCardsThemeBase.EditText.Background" parent="CommonEditTextBackgroundsStyle">
+    </style>
+</resources>
