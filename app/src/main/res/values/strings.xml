@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">MyFlashcards</string>
+
+    <!-- SignIn Activity-->
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="contact_us">&lt;b&gt;&lt;u&gt;Contact us&lt;/u&gt;&lt;/b&gt;</string>"
     <string name="choose_your_class">CHOOSE YOUR CLASS</string>
     <string name="password">PASSWORD</string>
-    <string name="e_mail">E-MAIL</string>
+    <string name="username">USERNAME</string>
     <string name="login">LOGIN</string>
-    <string name="sign_up_now">Sign up now!</string>
-    <string name="no_account">Don\'t have &lt;b&gt;myFlashcards&lt;/b&gt; account?</string>
+    <string name="sign_up_now">&lt;b&gt;&lt;u&gt;Sign up now!&lt;/u&gt;&lt;/b&gt;</string>
+    <string name="no_account">No &lt;b&gt;myFlashcards&lt;/b&gt; account?</string>
     <string name="title_activity_sign_up">Sign Up</string>
     <string name="sign_up">SIGN UP</string>
     <string name="first_name">FIRST NAME</string>

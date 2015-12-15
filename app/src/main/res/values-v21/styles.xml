@@ -11,8 +11,8 @@
         <item name="android:navigationBarColor">@color/primary_dark</item>
     </style>
 
-    <style name="FlashCardsThemeBase.EditText" parent="CommonTheme.EditText">
-        <item name="android:backgroundTint">@color/background_tint</item>
-    </style>
+    <!--<style name="FlashCardsThemeBase.EditText" parent="CommonTheme.EditText">-->
+        <!--<item name="android:backgroundTint">@color/background_tint</item>-->
+    <!--</style>-->
 
 </resources>
