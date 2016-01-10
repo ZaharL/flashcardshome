@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">MyFlashcards</string>
 
+    <!--API URLS-->
+    <string formatted="false" name="sign_in">http://r1.dev.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string formatted="false" name="get_user_classes">http://r1.dev.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
+
     <!-- SignIn Activity-->
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="contact_us">&lt;b&gt;&lt;u&gt;Contact us&lt;/u&gt;&lt;/b&gt;</string>"

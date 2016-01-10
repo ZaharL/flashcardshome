@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/FlashCardsThemeBase"
     tools:context="com.learningstarz.myflashcards.ui.SignUpActivity">
 
     <ScrollView
@@ -19,92 +18,84 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:theme="@style/FlashCardsThemeBase.EditText.Background">
+                android:layout_marginBottom="7dp">
 
                 <EditText
                     android:id="@+id/etRegisterFirsName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/first_name"
-                    android:inputType="text"
-                    android:theme="@style/FlashCardsThemeBase.EditText"/>
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:theme="@style/FlashCardsThemeBase.EditText.Background">
+                android:layout_marginBottom="7dp">
 
                 <EditText
                     android:id="@+id/etRegisterLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/last_name"
-                    android:inputType="text"
-                    android:theme="@style/FlashCardsThemeBase.EditText" />
+                    android:inputType="text" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:theme="@style/FlashCardsThemeBase.EditText.Background">
+                android:layout_marginBottom="7dp">
 
                 <EditText
                     android:id="@+id/etRegisterEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email_address"
-                    android:inputType="textEmailAddress"
-                    android:theme="@style/FlashCardsThemeBase.EditText"/>
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:theme="@style/FlashCardsThemeBase.EditText.Background">
+                android:layout_marginBottom="7dp">
 
                 <EditText
                     android:id="@+id/etRegisterPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="textPassword"
-                    android:theme="@style/FlashCardsThemeBase.EditText"/>
+                    android:inputType="textPassword" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="7dp"
-                android:theme="@style/FlashCardsThemeBase.EditText.Background">
+                android:layout_marginBottom="7dp">
 
                 <EditText
                     android:id="@+id/etLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/confirm_password"
-                    android:inputType="textPassword"
-                    android:theme="@style/FlashCardsThemeBase.EditText"/>
+                    android:inputType="textPassword" />
             </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="18dp"
-                android:paddingRight="18dp"
+                android:layout_marginBottom="18dp"
                 android:layout_marginTop="50dp"
-                android:layout_marginBottom="18dp">
+                android:paddingLeft="18dp"
+                android:paddingRight="18dp">
+
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/btn_orange_background"
                     android:text="@string/sign_up"
                     android:textColor="#fff"
-                    android:textStyle="bold"
                     android:textSize="20sp"
-                    android:background="@drawable/btn_orange_background"/>
+                    android:textStyle="bold" />
             </RelativeLayout>
 
         </LinearLayout>
