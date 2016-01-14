@@ -2,7 +2,7 @@
     <string name="app_name">MyFlashcards</string>
 
     <!--API URLS-->
-    <string formatted="false" name="sign_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string formatted="false" name="log_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
     <string formatted="false" name="get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
 
     <!-- SignIn Activity-->
@@ -21,9 +21,19 @@
     <string name="email_address">EMAIL_ADDRESS</string>
     <string name="confirm_password">CONFIRM PASSWORD</string>
     <string name="title_activity_edit_card">Edit Card</string>
+    <string name="d_m_auth_error_email">Please enter a valid email address and try again</string>
+    <string name="d_m_auth_error_password">Please enter a valid password and try again</string>
+    <string name="d_m_auth_error_choose_class">Please select a class from drop down list and try again</string>
+    <string name="d_m_auth_error_title">&lt;b&gt;Authentication error&lt;/b&gt;</string>
+    <string name="d_m_login_error_title">&lt;b&gt;Login error&lt;/b&gt;</string>
+    <string name="d_m_login_error_message">Login or(and) password are incorrect</string>
+    <string name="close">Close</string>
 
     <!-- ChooseClassActivity-->
     <string name="choose_class_title">Choose classes</string>
+
+    <!-- MyDeckActivity-->
+    <string name="my_deck_title">My Decks</string>
 
 
 </resources>

@@ -40,6 +40,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.FirstActivity" />
         </activity>
+        <activity
+            android:name=".ui.activities.MyDeckActivity"
+            android:label="@string/choose_class_title"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.FirstActivity" />
+        </activity>
     </application>
 
 </manifest>

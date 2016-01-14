@@ -1,5 +1,8 @@
 package com.learningstarz.myflashcards.ui.activities;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -10,6 +13,7 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -26,14 +30,20 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 public class FirstActivity extends AppCompatActivity {
 
     ProgressBar classProgressbar;
     RelativeLayout btnChooseClass;
+    String validEmail = "";
+    EditText etPassword;
     UserClass returnedClass = null;
 
     @Override
@@ -43,6 +53,9 @@ public class FirstActivity extends AppCompatActivity {
         classProgressbar = (ProgressBar) findViewById(R.id.SignInActivity_pbChooseClass);
         btnChooseClass = (RelativeLayout) findViewById(R.id.SignInActivity_rlChooseButton);
         btnChooseClass.setEnabled(false);
+        etPassword = (EditText) findViewById(R.id.SignInActivity_etPassword);
+        Button btnLogin = (Button) findViewById(R.id.SignInActivity_btnLogin);
+        btnLogin.setOnClickListener(btnLoginListener);
         initTextViews();
         initEditTextViews();
     }
@@ -85,6 +98,7 @@ public class FirstActivity extends AppCompatActivity {
                 String str = s.toString();
 
                 if (Tools.validateEmail(str)) {
+                    validEmail = str;
                     Formatter urlCreator = new Formatter();
                     urlCreator.format(getString(R.string.get_user_classes), str);
                     new GetClasses().execute(urlCreator.toString());
@@ -98,10 +112,85 @@ public class FirstActivity extends AppCompatActivity {
         });
     }
 
+    View.OnClickListener btnLoginListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!btnChooseClass.isEnabled()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                builder.setTitle(Html.fromHtml(getResources().getString(R.string.d_m_auth_error_title)));
+                builder.setMessage(R.string.d_m_auth_error_email);
+                builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else if (etPassword.getText().toString().equals("")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                builder.setTitle(Html.fromHtml(getResources().getString(R.string.d_m_auth_error_title)));
+                builder.setMessage(R.string.d_m_auth_error_password);
+                builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else if (btnChooseClass.isEnabled() && returnedClass == null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                builder.setTitle(Html.fromHtml(getResources().getString(R.string.d_m_auth_error_title)));
+                builder.setMessage(R.string.d_m_auth_error_choose_class);
+                builder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            } else {
+                String password = etPassword.getText().toString();
+                try {
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    md.update(password.getBytes("UTF-8"));
+                    byte[] digest = md.digest();
+                    Formatter passwordCreator = new Formatter();
+                    passwordCreator.format("%064x", new BigInteger(1, digest));
+                    password = passwordCreator.toString();
+                    passwordCreator.close();
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                // TODO
+            }
+        }
+    };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             returnedClass = data.getParcelableExtra(Tools.userClassNameExtraTag);
+            toggleChooseClassButton(true);
+        } else {
+            returnedClass = null;
+        }
+    }
+
+
+    /**
+     *
+     * @param b - toggle parameter. If false sets button to default mode, else sets name of returned class
+     */
+    private void toggleChooseClassButton(Boolean b) {
+        if (!b) {
+            TextView tvChooseButtonText = (TextView)btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
+            tvChooseButtonText.setText(getString(R.string.choose_your_class));
+            if (Build.VERSION.SDK_INT >= 23) {
+                tvChooseButtonText.setTextColor(getResources().getColor(R.color.hint_text_color, null));
+            } else {
+                tvChooseButtonText.setTextColor(getResources().getColor(R.color.hint_text_color));
+            }
+        } else {
             TextView tvChooseButtonText = (TextView)btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
             tvChooseButtonText.setText(returnedClass.getName());
             if (Build.VERSION.SDK_INT >= 23) {
@@ -109,13 +198,8 @@ public class FirstActivity extends AppCompatActivity {
             } else {
                 tvChooseButtonText.setTextColor(getResources().getColor(R.color.white));
             }
-
         }
     }
-
-//    private void toggleClassButton() {
-//
-//    }
 
     private class GetClasses extends AsyncTask<String, Void, String> {
 
@@ -197,12 +281,14 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     private void instantiateClassesButton(ArrayList<UserClass> userClasses) {
+        toggleChooseClassButton(false);
         if (!userClasses.isEmpty()) {
             btnChooseClass.setEnabled(true);
             ClassesListener cl = new ClassesListener(userClasses);
             btnChooseClass.setOnClickListener(cl);
         } else {
             btnChooseClass.setEnabled(false);
+            returnedClass = null;
         }
     }
 
