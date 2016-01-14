@@ -1,8 +1,9 @@
 <resources>
-    <style name="CommonTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="CommonTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
         <item name="android:textColorPrimary">@color/text_color_blue</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:checkboxStyle">@style/CheckBox</item>
         <item name="android:editTextStyle">@style/EditTextStyle</item>
 
     </style>
@@ -15,6 +16,10 @@
         <item name="backgroundTint">@color/background_tint</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
+    </style>
+
+    <style name="CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textColor">@color/white</item>
     </style>
 
 </resources>

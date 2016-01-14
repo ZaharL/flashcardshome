@@ -1,4 +1,4 @@
 <menu
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.learningstarz.myflashcards.ui.SignUpActivity">
+    tools:context=".ui.activities.SignUpActivity">
 </menu>

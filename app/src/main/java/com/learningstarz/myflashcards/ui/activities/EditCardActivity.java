@@ -1,4 +1,4 @@
-package com.learningstarz.myflashcards.ui;
+package com.learningstarz.myflashcards.ui.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;

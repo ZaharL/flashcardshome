@@ -2,8 +2,8 @@
     <string name="app_name">MyFlashcards</string>
 
     <!--API URLS-->
-    <string formatted="false" name="sign_in">http://r1.dev.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
-    <string formatted="false" name="get_user_classes">http://r1.dev.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
+    <string formatted="false" name="sign_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string formatted="false" name="get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
 
     <!-- SignIn Activity-->
     <string name="forgot_your_password">Forgot your password?</string>
@@ -22,7 +22,8 @@
     <string name="confirm_password">CONFIRM PASSWORD</string>
     <string name="title_activity_edit_card">Edit Card</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- ChooseClassActivity-->
+    <string name="choose_class_title">Choose classes</string>
+
 
 </resources>

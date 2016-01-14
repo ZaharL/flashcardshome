@@ -1,12 +1,14 @@
-package com.learningstarz.myflashcards.ui;
+package com.learningstarz.myflashcards.ui.activities;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -14,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.learningstarz.myflashcards.R;
+import com.learningstarz.myflashcards.Tools.Tools;
 import com.learningstarz.myflashcards.Types.UserClass;
 
 import org.json.JSONArray;
@@ -27,11 +30,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Formatter;
-
 public class FirstActivity extends AppCompatActivity {
 
     ProgressBar classProgressbar;
     RelativeLayout btnChooseClass;
+    UserClass returnedClass = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class FirstActivity extends AppCompatActivity {
     public void hidePB() {
         classProgressbar.setVisibility(View.INVISIBLE);
     }
+
+
 
     private void initTextViews() {
         TextView tvSignUp = (TextView) findViewById(R.id.tvSignUp);
@@ -78,7 +83,8 @@ public class FirstActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String str = s.toString();
-                if (str.contains("@") && str.contains(".")) {
+
+                if (Tools.validateEmail(str)) {
                     Formatter urlCreator = new Formatter();
                     urlCreator.format(getString(R.string.get_user_classes), str);
                     new GetClasses().execute(urlCreator.toString());
@@ -91,6 +97,25 @@ public class FirstActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            returnedClass = data.getParcelableExtra(Tools.userClassNameExtraTag);
+            TextView tvChooseButtonText = (TextView)btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
+            tvChooseButtonText.setText(returnedClass.getName());
+            if (Build.VERSION.SDK_INT >= 23) {
+                tvChooseButtonText.setTextColor(getResources().getColor(R.color.white, null));
+            } else {
+                tvChooseButtonText.setTextColor(getResources().getColor(R.color.white));
+            }
+
+        }
+    }
+
+//    private void toggleClassButton() {
+//
+//    }
 
     private class GetClasses extends AsyncTask<String, Void, String> {
 
@@ -116,7 +141,7 @@ public class FirstActivity extends AppCompatActivity {
                 InputStream is = con.getInputStream();
                 br = new BufferedReader(new InputStreamReader(is));
 
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 String line;
 
                 while ((line = br.readLine()) != null) {
@@ -174,9 +199,26 @@ public class FirstActivity extends AppCompatActivity {
     private void instantiateClassesButton(ArrayList<UserClass> userClasses) {
         if (!userClasses.isEmpty()) {
             btnChooseClass.setEnabled(true);
-            //TODO Create transfer to other activity with classes list
+            ClassesListener cl = new ClassesListener(userClasses);
+            btnChooseClass.setOnClickListener(cl);
         } else {
             btnChooseClass.setEnabled(false);
+        }
+    }
+
+    class ClassesListener implements View.OnClickListener {
+
+        ArrayList<UserClass> userClasses;
+
+        public ClassesListener(ArrayList<UserClass> userClasses) {
+            this.userClasses = userClasses;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent choose = new Intent(FirstActivity.this, ChooseClass.class);
+            choose.putExtra(Tools.userClassExtraTag, userClasses);
+            startActivityForResult(choose, 1);
         }
     }
 
