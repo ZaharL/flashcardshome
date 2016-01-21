@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,15 +9,38 @@
         android:id="@+id/MyDeckActivity.toolbar"
         layout="@layout/toolbar"/>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/MyDeckActivity.tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <android.support.v4.widget.DrawerLayout
+        android:layout_height="match_parent"
+        android:id="@+id/MyDeckActivity.drawerLayout"
+        android:layout_below="@id/MyDeckActivity.toolbar"
+        android:layout_width="match_parent">
+        <!-- Screen content-->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/MyDeckActivity.viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/MyDeckActivity.tabLayout"
+                android:background="@color/primary_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-</LinearLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/MyDeckActivity.viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <!-- NavigationDrawer Layout-->
+        <android.support.design.widget.NavigationView
+            android:id="@+id/MyDeckActivity.nawDrawer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nav_drawer_header"
+            app:itemTextColor="@color/white"
+            android:background="@color/nav_drawer_background"
+            app:menu="@menu/naw_drawer_menu"/>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>

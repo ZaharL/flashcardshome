@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/reports"
+            android:icon="@drawable/ico_naw_reports"
+            android:title="@string/nav_menu_reports"/>
+        <item android:id="@+id/sync"
+            android:icon="@drawable/ico_naw_sync"
+            android:title="@string/nav_menu_sync"/>
+        <item android:title="">
+            <menu>
+                <item android:id="@+id/logout"
+                    android:icon="@drawable/ico_naw_logout"
+                    android:title="@string/nav_menu_logout"/>
+            </menu>
+        </item>
+
+    </group>
+</menu>

@@ -1,7 +1,6 @@
 package com.learningstarz.myflashcards.ui.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.Tools.Tools;
+import com.learningstarz.myflashcards.Types.User;
 import com.learningstarz.myflashcards.Types.UserClass;
 
 import org.json.JSONArray;
@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -38,19 +39,22 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
+
 public class FirstActivity extends AppCompatActivity {
 
     ProgressBar classProgressbar;
+    ProgressBar logInPB;
+
     RelativeLayout btnChooseClass;
-    String validEmail = "";
     EditText etPassword;
+
+    String validEmail = "";
     UserClass returnedClass = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        classProgressbar = (ProgressBar) findViewById(R.id.SignInActivity_pbChooseClass);
         btnChooseClass = (RelativeLayout) findViewById(R.id.SignInActivity_rlChooseButton);
         btnChooseClass.setEnabled(false);
         etPassword = (EditText) findViewById(R.id.SignInActivity_etPassword);
@@ -58,16 +62,29 @@ public class FirstActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(btnLoginListener);
         initTextViews();
         initEditTextViews();
+        initProgressBars();
     }
 
-    public void showPB() {
+    private void initProgressBars() {
+        classProgressbar = (ProgressBar) findViewById(R.id.SignInActivity_pbChooseClass);
+        logInPB = (ProgressBar) findViewById(R.id.SignInActivity_pbLogIn);
+    }
+
+    public void showLogInPB() {
+        logInPB.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoginPB() {
+        logInPB.setVisibility(View.GONE);
+    }
+
+    public void showClassPB() {
         classProgressbar.setVisibility(View.VISIBLE);
     }
 
-    public void hidePB() {
+    public void hideClassPB() {
         classProgressbar.setVisibility(View.INVISIBLE);
     }
-
 
 
     private void initTextViews() {
@@ -100,7 +117,7 @@ public class FirstActivity extends AppCompatActivity {
                 if (Tools.validateEmail(str)) {
                     validEmail = str;
                     Formatter urlCreator = new Formatter();
-                    urlCreator.format(getString(R.string.get_user_classes), str);
+                    urlCreator.format(getString(R.string.url_get_user_classes), str);
                     new GetClasses().execute(urlCreator.toString());
                     urlCreator.close();
                 }
@@ -161,7 +178,10 @@ public class FirstActivity extends AppCompatActivity {
                 } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-                // TODO
+                Formatter urlCreator = new Formatter();
+                urlCreator.format(getString(R.string.url_log_in), validEmail, password, returnedClass.getId());
+                new LogInTask().execute(urlCreator.toString());
+                urlCreator.close();
             }
         }
     };
@@ -169,7 +189,7 @@ public class FirstActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            returnedClass = data.getParcelableExtra(Tools.userClassNameExtraTag);
+            returnedClass = data.getParcelableExtra(Tools.firstActivity_userClassNameExtraTag);
             toggleChooseClassButton(true);
         } else {
             returnedClass = null;
@@ -178,12 +198,11 @@ public class FirstActivity extends AppCompatActivity {
 
 
     /**
-     *
      * @param b - toggle parameter. If false sets button to default mode, else sets name of returned class
      */
     private void toggleChooseClassButton(Boolean b) {
         if (!b) {
-            TextView tvChooseButtonText = (TextView)btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
+            TextView tvChooseButtonText = (TextView) btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
             tvChooseButtonText.setText(getString(R.string.choose_your_class));
             if (Build.VERSION.SDK_INT >= 23) {
                 tvChooseButtonText.setTextColor(getResources().getColor(R.color.hint_text_color, null));
@@ -191,12 +210,93 @@ public class FirstActivity extends AppCompatActivity {
                 tvChooseButtonText.setTextColor(getResources().getColor(R.color.hint_text_color));
             }
         } else {
-            TextView tvChooseButtonText = (TextView)btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
+            TextView tvChooseButtonText = (TextView) btnChooseClass.findViewById(R.id.SignInActivity_tvChooseButtonName);
             tvChooseButtonText.setText(returnedClass.getName());
             if (Build.VERSION.SDK_INT >= 23) {
                 tvChooseButtonText.setTextColor(getResources().getColor(R.color.white, null));
             } else {
                 tvChooseButtonText.setTextColor(getResources().getColor(R.color.white));
+            }
+        }
+    }
+
+    private class LogInTask extends  AsyncTask<String, Void, String> {
+
+        AlertDialog.Builder alertDialogBuilder;
+        User resUser = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLogInPB();
+            alertDialogBuilder = new AlertDialog.Builder(FirstActivity.this);
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+
+            try {
+                URL url = new URL(params[0]);
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+
+                InputStream is = urlConnection.getInputStream();
+                BufferedReader br = new BufferedReader(new InputStreamReader(is));
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+
+                result = sb.toString();
+                br.close();
+                is.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            try {
+                JSONObject dataFirst = new JSONObject(s);
+                JSONObject status = dataFirst
+                        .getJSONObject(Tools.jsonObjectResult)
+                        .getJSONObject(Tools.jsonObjectStatus);
+                if (status.getInt("code") == Tools.errLogIn) {
+                    alertDialogBuilder.setTitle(Html.fromHtml(getString(R.string.d_m_login_error_title)));
+                    alertDialogBuilder.setMessage(status.getString("description"));
+                    alertDialogBuilder.setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    alertDialogBuilder.show();
+                    hideLoginPB();
+                } else if (status.getInt("code") == Tools.errOk){
+                    JSONObject data = dataFirst
+                            .getJSONObject(Tools.jsonObjectResult)
+                            .getJSONObject(Tools.jsonObjectData);
+                    resUser = new User(
+                            data.getString("fullname"),
+                            data.getString("token"),
+                            data.getInt("roleId"));
+                    Intent loginIntent = new Intent(FirstActivity.this, MyDeckActivity.class);
+                    loginIntent.putExtra(Tools.firstActivity_userExtraTag, resUser);
+                    startActivity(loginIntent);
+                    hideLoginPB();
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -211,7 +311,7 @@ public class FirstActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            showPB();
+            showClassPB();
         }
 
         @Override
@@ -253,8 +353,8 @@ public class FirstActivity extends AppCompatActivity {
             try {
                 data = new JSONObject(resString);
                 JSONArray classes = data
-                        .getJSONObject("result")
-                        .getJSONObject("data")
+                        .getJSONObject(Tools.jsonObjectResult)
+                        .getJSONObject(Tools.jsonObjectData)
                         .getJSONArray("classes");
 
                 for (int i = 0; i < classes.length(); i++) {
@@ -276,7 +376,7 @@ public class FirstActivity extends AppCompatActivity {
 
             userClassesArray.trimToSize();
             instantiateClassesButton(userClassesArray);
-            hidePB();
+            hideClassPB();
         }
     }
 
@@ -303,7 +403,7 @@ public class FirstActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent choose = new Intent(FirstActivity.this, ChooseClass.class);
-            choose.putExtra(Tools.userClassExtraTag, userClasses);
+            choose.putExtra(Tools.firstActivity_userClassExtraTag, userClasses);
             startActivityForResult(choose, 1);
         }
     }

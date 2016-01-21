@@ -2,8 +2,8 @@
     <string name="app_name">MyFlashcards</string>
 
     <!--API URLS-->
-    <string formatted="false" name="log_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
-    <string formatted="false" name="get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
+    <string formatted="false" name="url_log_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string formatted="false" name="url_get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
 
     <!-- SignIn Activity-->
     <string name="forgot_your_password">Forgot your password?</string>
@@ -34,6 +34,13 @@
 
     <!-- MyDeckActivity-->
     <string name="my_deck_title">My Decks</string>
+    <string name="please_click_back_again">Please click BACK again to exit</string>
+    <string name="nav_menu_reports">Reports</string>
+    <string name="nav_menu_sync">Sync</string>
+    <string name="nav_menu_logout">Logout</string>
+    <string name="nav_drawer_logo">Logo</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
 
 </resources>

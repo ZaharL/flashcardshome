@@ -6,38 +6,54 @@
     android:paddingBottom="10dp"
     tools:context=".FirstActivity">
 
-    <LinearLayout
+
+    <FrameLayout
         android:id="@+id/llSignInEditTextFields"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:paddingBottom="5dp">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
-        <EditText
-            android:id="@+id/SignInActivity.etLogin"
-            style="@style/EditTextStyle"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/login_icon"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/login_icon"
-            android:hint="@string/username"
-            android:inputType="textEmailAddress" />
+            android:layout_height="92dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
 
-        <EditText
-            android:id="@+id/SignInActivity.etPassword"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableLeft="@drawable/password_icon"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/password_icon"
-            android:hint="@string/password"
-            android:inputType="textPassword" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/SignInActivity.etLogin"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/login_icon"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/login_icon"
+                android:hint="@string/username"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/SignInActivity.etPassword"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/password_icon"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/password_icon"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/SignInActivity.pbLogIn"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

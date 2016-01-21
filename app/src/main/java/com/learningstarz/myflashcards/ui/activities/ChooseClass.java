@@ -33,7 +33,7 @@ public class ChooseClass extends AppCompatActivity {
         setContentView(R.layout.choose_activity);
 
         Bundle data = getIntent().getExtras();
-        alUCl = data.getParcelableArrayList(Tools.userClassExtraTag);
+        alUCl = data.getParcelableArrayList(Tools.firstActivity_userClassExtraTag);
 
         ListView lvUserClassesList = (ListView) findViewById(R.id.ChooseActivity_lvClasses);
         lvUserClassesList.setAdapter(new UserClassesAdapter(this, R.layout.choose_class_list_view_item, alUCl));
@@ -90,7 +90,7 @@ public class ChooseClass extends AppCompatActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             userClass.setChecked(isChecked);
             Intent returnIntent = new Intent();
-            returnIntent.putExtra(Tools.userClassNameExtraTag, userClass);
+            returnIntent.putExtra(Tools.firstActivity_userClassNameExtraTag, userClass);
             setResult(RESULT_OK, returnIntent);
             finish();
         }
