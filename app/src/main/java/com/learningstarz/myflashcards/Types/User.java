@@ -10,17 +10,20 @@ public class User implements Parcelable{
     private String fullName;
     private String token;
     private int roleId;
+    private String email;
 
-    public User(String fullName, String token, int roleId) {
+    public User(String fullName, String email, String token, int roleId) {
         this.fullName = fullName;
         this.token = token;
         this.roleId = roleId;
+        this.email = email;
     }
 
     protected User(Parcel in) {
         fullName = in.readString();
         token = in.readString();
         roleId = in.readInt();
+        email = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -47,6 +50,10 @@ public class User implements Parcelable{
         return roleId;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,5 +64,6 @@ public class User implements Parcelable{
         dest.writeString(fullName);
         dest.writeString(token);
         dest.writeInt(roleId);
+        dest.writeString(email);
     }
 }

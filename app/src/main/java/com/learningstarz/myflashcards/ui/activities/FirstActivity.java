@@ -10,13 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.Tools.Tools;
@@ -34,6 +34,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -256,6 +257,9 @@ public class FirstActivity extends AppCompatActivity {
                 br.close();
                 is.close();
 
+            } catch (SocketException s) {
+                Toast.makeText(FirstActivity.this, getString(R.string.toast_connection_error), Toast.LENGTH_SHORT).show();
+                hideLoginPB();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -268,8 +272,8 @@ public class FirstActivity extends AppCompatActivity {
             try {
                 JSONObject dataFirst = new JSONObject(s);
                 JSONObject status = dataFirst
-                        .getJSONObject(Tools.jsonObjectResult)
-                        .getJSONObject(Tools.jsonObjectStatus);
+                        .getJSONObject(Tools.jsonResult)
+                        .getJSONObject(Tools.jsonStatus);
                 if (status.getInt("code") == Tools.errLogIn) {
                     alertDialogBuilder.setTitle(Html.fromHtml(getString(R.string.d_m_login_error_title)));
                     alertDialogBuilder.setMessage(status.getString("description"));
@@ -283,13 +287,14 @@ public class FirstActivity extends AppCompatActivity {
                     hideLoginPB();
                 } else if (status.getInt("code") == Tools.errOk){
                     JSONObject data = dataFirst
-                            .getJSONObject(Tools.jsonObjectResult)
-                            .getJSONObject(Tools.jsonObjectData);
+                            .getJSONObject(Tools.jsonResult)
+                            .getJSONObject(Tools.jsonData);
                     resUser = new User(
                             data.getString("fullname"),
+                            validEmail,
                             data.getString("token"),
                             data.getInt("roleId"));
-                    Intent loginIntent = new Intent(FirstActivity.this, MyDeckActivity.class);
+                    Intent loginIntent = new Intent(FirstActivity.this, MyDecksActivity.class);
                     loginIntent.putExtra(Tools.firstActivity_userExtraTag, resUser);
                     startActivity(loginIntent);
                     hideLoginPB();
@@ -353,8 +358,8 @@ public class FirstActivity extends AppCompatActivity {
             try {
                 data = new JSONObject(resString);
                 JSONArray classes = data
-                        .getJSONObject(Tools.jsonObjectResult)
-                        .getJSONObject(Tools.jsonObjectData)
+                        .getJSONObject(Tools.jsonResult)
+                        .getJSONObject(Tools.jsonData)
                         .getJSONArray("classes");
 
                 for (int i = 0; i < classes.length(); i++) {
