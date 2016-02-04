@@ -1,6 +1,8 @@
 package com.learningstarz.myflashcards.ui.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -96,7 +98,7 @@ public class MyDecksActivity extends AppCompatActivity {
         View nawViewHeader = navView.getHeaderView(0);
         ((TextView) nawViewHeader.findViewById(R.id.NavDrawer_tvName)).setText(user.getFullName());
 
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 selectDrawerItem(item);
@@ -111,6 +113,28 @@ public class MyDecksActivity extends AppCompatActivity {
                 Intent intent = new Intent(MyDecksActivity.this, ReportsActivity.class);
                 intent.putExtra(Tools.firstActivity_userExtraTag, user);
                 startActivity(intent);
+                break;
+            case R.id.logout:
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyDecksActivity.this);
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent logoutIntent = new Intent(MyDecksActivity.this, FirstActivity.class);
+                        startActivity(logoutIntent);
+                        finish();
+                    }
+                });
+                builder.setTitle(R.string.nav_menu_logout);
+                builder.setMessage(R.string.are_you_sure);
+                builder.show();
+                break;
+
         }
         item.setCheckable(false);
         mDrawer.closeDrawers();
@@ -158,7 +182,7 @@ public class MyDecksActivity extends AppCompatActivity {
     public class CardsPagerAdapter extends FragmentPagerAdapter {
         public static final int PAGE_COUNT = 3;
 
-        private String[] tabTitles = new String[] {getString(R.string.date), getString(R.string.name), getString(R.string.author)};
+        private String[] tabTitles = new String[]{getString(R.string.date), getString(R.string.name), getString(R.string.author)};
         private Context context;
 
         public CardsPagerAdapter(FragmentManager fm, Context context) {
@@ -168,7 +192,7 @@ public class MyDecksActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return FragmentMyDeckTab.newInstance(position+1, Tools.sortDecks(myDecks, position+1));
+            return FragmentMyDeckTab.newInstance(position + 1, Tools.sortDecks(myDecks, position + 1));
         }
 
         @Override
@@ -207,7 +231,7 @@ public class MyDecksActivity extends AppCompatActivity {
                 String line = "";
                 StringBuilder sb = new StringBuilder();
 
-                while ((line = br.readLine()) != null){
+                while ((line = br.readLine()) != null) {
                     sb.append(line);
                 }
 
@@ -306,7 +330,7 @@ public class MyDecksActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inf= getMenuInflater();
+        MenuInflater inf = getMenuInflater();
         inf.inflate(R.menu.my_deck_menu, menu);
         return true;
     }
@@ -314,7 +338,7 @@ public class MyDecksActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) return true;
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.home:
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;

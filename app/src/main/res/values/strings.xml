@@ -46,8 +46,11 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="date">Date</string>
     <string name="name">Name</string>
+    <string name="cancel">Cancel</string>
     <string name="author">Author</string>
-    
+    <string name="ok">Ok</string>
+    <string name="are_you_sure">Are you sure?</string>
+
     <!-- ReportsActivity-->
     <string name="reports_title">Reports</string>
     <string name="reports_message">Reports will be delivered to you via email.
