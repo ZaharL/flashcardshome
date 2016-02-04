@@ -1,64 +1,59 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/FlashCardsThemeNoTitleBar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pantone_532_c"
     android:orientation="vertical"
-    android:theme="@style/FlashCardsThemeNoTitleBar"
     android:paddingBottom="10dp"
     tools:context=".FirstActivity">
 
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/llSignInEditTextFields"
         android:layout_width="match_parent"
-        android:layout_height="92dp"
-        android:layout_centerVertical="true"
-        android:orientation="vertical"
-        android:paddingBottom="5dp">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
 
-        <!--<ImageView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:layout_marginRight="3dp"-->
-        <!--android:background="@drawable/login_icon" />-->
-
-        <EditText
-            android:id="@+id/etLogin"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/edit_text_background"
-            android:backgroundTint="@color/background_tint"
-            android:drawableLeft="@drawable/login_icon"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/login_icon"
-            android:hint="@string/username"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textColorHint="@color/hint_text_color"
-            android:textSize="14sp" />
+            android:layout_height="92dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@color/edit_text_background"
-            android:backgroundTint="@color/background_tint"
-            android:drawableLeft="@drawable/password_icon"
-            android:drawablePadding="10dp"
-            android:drawableStart="@drawable/password_icon"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:textColorHint="@color/hint_text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
+            <EditText
+                android:id="@+id/SignInActivity.etLogin"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/login_icon"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/login_icon"
+                android:hint="@string/username"
+                android:inputType="textEmailAddress" />
+
+            <EditText
+                android:id="@+id/SignInActivity.etPassword"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/password_icon"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/password_icon"
+                android:hint="@string/password"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/SignInActivity.pbLogIn"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateOnly="true"
+            android:visibility="gone" />
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,19 +79,21 @@
 
 
     <RelativeLayout
-        android:layout_below="@id/llSignInEditTextFields"
-        android:id="@+id/rlChoose"
+        android:id="@+id/SignInActivity.rlChooseButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/llSignInEditTextFields"
         android:layout_marginTop="5dp"
-        android:background="@color/edit_text_background"
+        android:clickable="true"
+        android:background="@drawable/sign_in_activity__btn_choose_class_background"
         android:orientation="horizontal"
-        android:paddingBottom="16dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingTop="16dp">
+        android:paddingRight="15dp">
 
         <TextView
+            android:id="@+id/SignInActivity.tvChooseButtonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -105,18 +102,35 @@
             android:textSize="14sp" />
 
         <ImageView
+            android:id="@+id/SignInActivity.ivForwardButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:background="@drawable/forward_icon" />
+
+        <ProgressBar
+            android:id="@+id/SignInActivity.pbChooseClass"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/SignInActivity.ivForwardButton"
+            android:layout_toStartOf="@id/SignInActivity.ivForwardButton"
+            android:indeterminateOnly="true"
+            android:visibility="invisible"
+            android:maxHeight="36dp"
+            android:maxWidth="36dp"
+            android:minHeight="36dp"
+            android:minWidth="36dp" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/llSignInTextViews"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -125,13 +139,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/forgot_your_password"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/forgot_your_password"
                 android:textSize="12sp" />
 
             <TextView
@@ -150,14 +165,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/tvAccountHaveQuestion"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="No myFlashcards account?"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:text="No myFlashcards account?"
                 android:textSize="12sp" />
 
             <TextView
@@ -174,21 +190,20 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_above="@id/llSignInTextViews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/llSignInTextViews"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
 
         <Button
+            android:id="@+id/SignInActivity.btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_orange_background"
-            android:text="@string/login"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:text="@string/login" />
     </LinearLayout>
 </RelativeLayout>

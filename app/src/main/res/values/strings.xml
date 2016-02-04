@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MyFlashcards</string>
 
+    <!--API URLS ||DO NOT TRANSLATE||-->
+    <string formatted="false" name="url_log_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string formatted="false" name="url_get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
+    <string formatted="false" name="url_host">http://r1.flashcardshome.com/%s</string>
+    <string formatted="false" name="url_get_my_decks">http://r1.flashcardshome.com/index.php/api/getMyDecks?token=%s</string>
+
     <!-- SignIn Activity-->
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="contact_us">&lt;b&gt;&lt;u&gt;Contact us&lt;/u&gt;&lt;/b&gt;</string>"
@@ -17,8 +23,39 @@
     <string name="email_address">EMAIL_ADDRESS</string>
     <string name="confirm_password">CONFIRM PASSWORD</string>
     <string name="title_activity_edit_card">Edit Card</string>
+    <string name="d_m_auth_error_email">Please enter a valid email address and try again</string>
+    <string name="d_m_auth_error_password">Please enter a valid password and try again</string>
+    <string name="d_m_auth_error_choose_class">Please select a class from drop down list and try again</string>
+    <string name="d_m_auth_error_title">&lt;b&gt;Authentication error&lt;/b&gt;</string>
+    <string name="d_m_login_error_title">&lt;b&gt;Login error&lt;/b&gt;</string>
+    <string name="d_m_login_error_message">Login or(and) password are incorrect</string>
+    <string name="toast_connection_error">Connection error. Please try again later</string>
+    <string name="close">Close</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <!-- ChooseClassActivity-->
+    <string name="choose_class_title">Choose classes</string>
+
+    <!-- MyDecksActivity-->
+    <string name="my_deck_title">My Decks</string>
+    <string name="please_click_back_again">Please click BACK again to exit</string>
+    <string name="nav_menu_reports">Reports</string>
+    <string name="nav_menu_sync">Sync</string>
+    <string name="nav_menu_logout">Logout</string>
+    <string name="nav_drawer_logo">Logo</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="author">Author</string>
+    
+    <!-- ReportsActivity-->
+    <string name="reports_title">Reports</string>
+    <string name="reports_message">Reports will be delivered to you via email.
+        Please provide email address if different from the one shown int the box
+        and choose daily or weekly delivery schedule.</string>
+    <string name="daily">DAILY</string>
+    <string name="weekly">WEEKLY</string>
+    <string name="subscribe">subscribe</string>
+
 
 </resources>

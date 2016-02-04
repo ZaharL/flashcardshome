@@ -1,4 +1,4 @@
 <menu
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.learningstarz.myflashcards.ui.EditCardActivity">
+    tools:context=".ui.activities.EditCardActivity">
 </menu>
