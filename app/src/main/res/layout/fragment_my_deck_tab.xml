@@ -18,6 +18,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add_24dp"
+        app:layout_behavior="com.learningstarz.myflashcards.ui.components.ScrollAwareFABBehavior"
         app:backgroundTint="@color/light_green"
         app:layout_anchor="@id/MyDeckActivity.recyclerView"
         app:layout_anchorGravity="bottom|right|end"/>

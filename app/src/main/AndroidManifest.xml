@@ -53,6 +53,17 @@
             android:name=".ui.activities.ReportsActivity"
             android:label="@string/reports_title"
             android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.MyDecksActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.MyDecksActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activities.CardsActivity"
+            android:label="@string/cards_title"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.MyDecksActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

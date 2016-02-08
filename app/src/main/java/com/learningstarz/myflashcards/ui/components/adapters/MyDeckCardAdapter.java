@@ -1,8 +1,11 @@
 package com.learningstarz.myflashcards.ui.components.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,10 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.learningstarz.myflashcards.R;
+import com.learningstarz.myflashcards.Tools.Tools;
 import com.learningstarz.myflashcards.Types.Deck;
+import com.learningstarz.myflashcards.ui.activities.CardsActivity;
+import com.learningstarz.myflashcards.ui.activities.MyDecksActivity;
 
 import java.util.ArrayList;
 
@@ -24,6 +30,7 @@ import java.util.ArrayList;
 public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.SimpleViewHolder> {
     Context mContext;
     ArrayList<Deck> decks;
+    private SwipeLayout prevLayout = null; // previous layout. needs to close it
 
     public MyDeckCardAdapter(Context context, ArrayList<Deck> decks) {
         this.decks = decks;
@@ -63,9 +70,40 @@ public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.Si
 
     @Override
     public void onBindViewHolder(final SimpleViewHolder viewHolder, final int position) {
-        Deck deck = decks.get(position);
+        final Deck deck = decks.get(position);
 
         viewHolder.swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+        viewHolder.swipeLayout.addSwipeListener(new SimpleSwipeListener() {
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                super.onOpen(layout);
+                if (prevLayout != null && prevLayout != layout) {
+                    prevLayout.close();
+                    prevLayout = layout;
+                } else {
+                    prevLayout = layout;
+                }
+            }
+
+            @Override
+            public void onStartOpen(SwipeLayout layout) {
+                super.onStartOpen(layout);
+                layout.open();
+            }
+
+            @Override
+            public void onStartClose(SwipeLayout layout) {
+                super.onStartClose(layout);
+                layout.close();
+            }
+        });
+
+        viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO create study activity
+            }
+        });
 
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +112,7 @@ public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.Si
                 decks.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, decks.size());
-                mItemManger.closeAllItems();
+                closeAllItems();
                 //TODO Create delete card from server mechanism
             }
         });
@@ -85,15 +123,19 @@ public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.Si
             viewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO You need to create EditCardsActivity, and the transition to it
+                    Intent cardsIntent = new Intent(mContext, CardsActivity.class);
+                    cardsIntent.putParcelableArrayListExtra(Tools.cardsExtraTag, deck.getCards());
+                    mContext.startActivity(cardsIntent);
+                    mItemManger.closeAllItems();
+
                 }
             });
         }
 
         viewHolder.tvDeckTitle.setText(deck.getTitle());
         viewHolder.tvDeckAuthor.setText(deck.getAuthor());
-        viewHolder.tvCardsCount.setText(deck.getCardsCount()+"");
-        viewHolder.tvProgress.setText(deck.getProgress()+"");
+        viewHolder.tvCardsCount.setText(deck.getCardsCount() + "");
+        viewHolder.tvProgress.setText(deck.getProgress() + "");
         viewHolder.pbDeckProgress.setProgress(deck.getProgress());
     }
 

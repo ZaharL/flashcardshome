@@ -60,5 +60,8 @@
     <string name="weekly">WEEKLY</string>
     <string name="subscribe">subscribe</string>
 
+    <!-- CardsActivity-->
+    <string name="cards_title">Cards</string>
+
 
 </resources>

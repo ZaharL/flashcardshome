@@ -18,6 +18,7 @@ public class Tools {
     public static final String firstActivity_userClassExtraTag = "uclextra";
     public static final String firstActivity_userClassNameExtraTag = "uclnmextra";
     public static final String firstActivity_userExtraTag = "userextra";
+    public static final String cardsExtraTag = "crdsextra";
 
     public static final String jsonData = "data";
     public static final String jsonResult = "result";

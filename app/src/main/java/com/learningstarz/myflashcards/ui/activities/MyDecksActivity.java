@@ -34,6 +34,7 @@ import com.learningstarz.myflashcards.Tools.Tools;
 import com.learningstarz.myflashcards.Types.Card;
 import com.learningstarz.myflashcards.Types.Deck;
 import com.learningstarz.myflashcards.Types.User;
+import com.learningstarz.myflashcards.ui.components.NonSwipeableViewPager;
 import com.learningstarz.myflashcards.ui.fragments.FragmentMyDeckTab;
 
 import org.json.JSONArray;
@@ -152,8 +153,9 @@ public class MyDecksActivity extends AppCompatActivity {
     }
 
     private void initViewPager() {
-        ViewPager viewPager = (ViewPager) findViewById(R.id.MyDeckActivity_viewPager);
+        NonSwipeableViewPager viewPager = (NonSwipeableViewPager) findViewById(R.id.MyDeckActivity_viewPager);
         viewPager.setAdapter(new CardsPagerAdapter(getSupportFragmentManager(), MyDecksActivity.this));
+
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.MyDeckActivity_tabLayout);
         tabLayout.setupWithViewPager(viewPager);

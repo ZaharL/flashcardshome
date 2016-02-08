@@ -1,14 +1,17 @@
 package com.learningstarz.myflashcards.Types;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by ZahARin on 24.01.2016.
  */
-public class Card {
+public class Card implements Parcelable {
     private int id;
     private String uid;
-    private int lastDateUpdated; //TODO create int to date transformation
+    private int lastDateUpdated;
     private String deckUid;
     private String question;
     private String answer;
@@ -31,6 +34,32 @@ public class Card {
         this.cardTime = cardTime;
         this.knowStatus = knowStatus;
     }
+
+    protected Card(Parcel in) {
+        id = in.readInt();
+        uid = in.readString();
+        lastDateUpdated = in.readInt();
+        deckUid = in.readString();
+        question = in.readString();
+        answer = in.readString();
+        image1 = in.readString();
+        image2 = in.readString();
+        imagePath = in.readString();
+        cardTime = in.readInt();
+        knowStatus = in.readInt();
+    }
+
+    public static final Creator<Card> CREATOR = new Creator<Card>() {
+        @Override
+        public Card createFromParcel(Parcel in) {
+            return new Card(in);
+        }
+
+        @Override
+        public Card[] newArray(int size) {
+            return new Card[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -74,5 +103,25 @@ public class Card {
 
     public int getKnowStatus() {
         return knowStatus;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(uid);
+        dest.writeInt(lastDateUpdated);
+        dest.writeString(deckUid);
+        dest.writeString(question);
+        dest.writeString(answer);
+        dest.writeString(image1);
+        dest.writeString(image2);
+        dest.writeString(imagePath);
+        dest.writeInt(cardTime);
+        dest.writeInt(knowStatus);
     }
 }
