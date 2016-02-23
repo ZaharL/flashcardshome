@@ -19,9 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.learningstarz.myflashcards.R;
-import com.learningstarz.myflashcards.Tools.Tools;
-import com.learningstarz.myflashcards.Types.User;
-import com.learningstarz.myflashcards.Types.UserClass;
+import com.learningstarz.myflashcards.data_storage.DataManager;
+import com.learningstarz.myflashcards.tools.Tools;
+import com.learningstarz.myflashcards.types.User;
+import com.learningstarz.myflashcards.types.UserClass;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -221,7 +222,7 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
 
-    private class LogInTask extends  AsyncTask<String, Void, String> {
+    private class LogInTask extends AsyncTask<String, Void, String> {
 
         AlertDialog.Builder alertDialogBuilder;
         User resUser = null;
@@ -285,7 +286,7 @@ public class FirstActivity extends AppCompatActivity {
                     });
                     alertDialogBuilder.show();
                     hideLoginPB();
-                } else if (status.getInt("code") == Tools.errOk){
+                } else if (status.getInt("code") == Tools.errOk) {
                     JSONObject data = dataFirst
                             .getJSONObject(Tools.jsonResult)
                             .getJSONObject(Tools.jsonData);
@@ -296,6 +297,9 @@ public class FirstActivity extends AppCompatActivity {
                             data.getInt("roleId"));
                     Intent loginIntent = new Intent(FirstActivity.this, MyDecksActivity.class);
                     loginIntent.putExtra(Tools.firstActivity_userExtraTag, resUser);
+
+                    DataManager.setUser(resUser); // save userdata in class, to get access from anywhere
+
                     startActivity(loginIntent);
                     hideLoginPB();
                     finish();
@@ -380,6 +384,7 @@ public class FirstActivity extends AppCompatActivity {
             }
 
             userClassesArray.trimToSize();
+            DataManager.setUserClasses(userClassesArray);
             instantiateClassesButton(userClassesArray);
             hideClassPB();
         }

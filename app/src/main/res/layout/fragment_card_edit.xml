@@ -1,0 +1,156 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/window_background"
+    android:orientation="vertical"
+    tools:context="com.learningstarz.myflashcards.ui.fragments.CardEditFragment">
+
+    <include layout="@layout/toolbar"
+        android:id="@+id/CardEditFragment.toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"
+                    android:layout_margin="16dp"
+                    android:textColor="@color/light_blue"
+                    android:text="@string/question"/>
+
+                <EditText
+                    android:id="@+id/CardEditFragment.etFace"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/face_undecor"
+                    android:textColorHint="@color/light_gray"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    style="@style/EditTextStyle"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/edit_text_background"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp">
+
+                    <LinearLayout
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/img_default_preview"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/upload_face_pic"
+                            android:textSize="18sp"
+                            android:textColor="@color/light_gray"
+                            android:textAllCaps="true"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/CardEditFragment.ivFace"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@android:color/transparent"/>
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:layout_margin="16dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/light_green"
+                    android:text="@string/answer"/>
+
+                <EditText
+                    android:id="@+id/CardEditFragment.etBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/back_undecor"
+                    android:textColorHint="@color/light_gray"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    style="@style/EditTextStyle"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/edit_text_background"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginEnd="24dp">
+
+                    <LinearLayout
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:src="@drawable/img_default_preview"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="@string/upload_back_pick"
+                            android:textSize="18sp"
+                            android:textColor="@color/light_gray"
+                            android:textAllCaps="true"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/CardEditFragment.ivBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:scaleType="centerCrop"
+                        android:background="@android:color/transparent"/>
+
+                </FrameLayout>
+
+                <Button
+                    android:id="@+id/CardEditFragment.btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_orange_background"
+                    android:textStyle="bold"
+                    android:text="@string/save"
+                    android:layout_margin="16dp"/>
+            </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="fab_margin">24dp</dimen>
+
+    <!-- CardsActivity-->
+    <dimen name="card_image_size">32dp</dimen>
+    <dimen name="divider_left_margin">48dp</dimen>
 </resources>

@@ -2,10 +2,18 @@
     <string name="app_name">MyFlashcards</string>
 
     <!--API URLS ||DO NOT TRANSLATE||-->
-    <string formatted="false" name="url_log_in">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
-    <string formatted="false" name="url_get_user_classes">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
-    <string formatted="false" name="url_host">http://r1.flashcardshome.com/%s</string>
-    <string formatted="false" name="url_get_my_decks">http://r1.flashcardshome.com/index.php/api/getMyDecks?token=%s</string>
+    <string name="url_log_in" formatted="false">http://r1.flashcardshome.com/index.php/api/logIn?email=%s&amp;password=%s&amp;classId=%d</string>
+    <string name="url_get_user_classes" formatted="false">http://r1.flashcardshome.com/index.php/api/getuserclasses?email=%s</string>
+    <string name="url_host" formatted="false">http://r1.flashcardshome.com/%s</string>
+    <string name="url_get_my_decks" formatted="false">http://r1.flashcardshome.com/index.php/api/getMyDecks?token=%s</string>
+    <string name="url_delete_deck_card" formatted="false">http://r1.flashcardshome.com/index.php/api/deleteDeckCard?token=%s&amp;cardUId=%s</string>
+
+    <!-- TOTAL-->
+    <string name="ok">OK</string>
+    <string name="no">NO</string>
+    <string name="yes">YES</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
 
     <!-- SignIn Activity-->
     <string name="forgot_your_password">Forgot your password?</string>
@@ -22,7 +30,6 @@
     <string name="last_name">LAST NAME</string>
     <string name="email_address">EMAIL_ADDRESS</string>
     <string name="confirm_password">CONFIRM PASSWORD</string>
-    <string name="title_activity_edit_card">Edit Card</string>
     <string name="d_m_auth_error_email">Please enter a valid email address and try again</string>
     <string name="d_m_auth_error_password">Please enter a valid password and try again</string>
     <string name="d_m_auth_error_choose_class">Please select a class from drop down list and try again</string>
@@ -46,10 +53,10 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="date">Date</string>
     <string name="name">Name</string>
-    <string name="cancel">Cancel</string>
-    <string name="author">Author</string>
-    <string name="ok">Ok</string>
+    <string name="author">Author:</string>
     <string name="are_you_sure">Are you sure?</string>
+    <string name="progress">Progress</string>
+    <string name="cards">Cards</string>
 
     <!-- ReportsActivity-->
     <string name="reports_title">Reports</string>
@@ -58,10 +65,22 @@
         and choose daily or weekly delivery schedule.</string>
     <string name="daily">DAILY</string>
     <string name="weekly">WEEKLY</string>
+    <string name="disable">DISABLE</string>
     <string name="subscribe">subscribe</string>
 
     <!-- CardsActivity-->
     <string name="cards_title">Cards</string>
+    <string name="face">&lt;b&gt;&lt;font color=#50c180&gt;FACE: &lt;/font&gt;&lt;/b&gt;</string>
+    <string name="back">&lt;b&gt;&lt;font color=#00a9ed&gt;BACK: &lt;/font&gt;&lt;/b&gt;</string>
+    <string name="CardsActivity.Dialog.DeleteCard.Title">Delete card</string>
+    <string name="CardsActivity.Dialog.DeleteCard.Message">Do you want to delete this card?</string>
+    <string name="answer">Answer</string>
+    <string name="question">Question</string>
+    <string name="save">save</string>
+    <string name="upload_face_pic">Upload face picture</string>
+    <string name="upload_back_pick">upload back picture</string>
+    <string name="face_undecor">FACE</string>
+    <string name="back_undecor">BACK</string>
 
 
 </resources>

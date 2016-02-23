@@ -56,7 +56,7 @@
             android:id="@+id/CardDeck.cardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            card-view:cardCornerRadius="7dp">
+            card-view:cardCornerRadius="5dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="Author:"
+                        android:text="@string/author"
                         android:layout_marginRight="4dp"
                         android:layout_marginEnd="4dp"
                         android:textColor="@color/gray"
@@ -122,7 +122,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="CARDS"
+                            android:textAllCaps="true"
+                            android:text="@string/cards"
                             android:textSize="12sp"
                             android:textColor="@color/gray"/>
                     </LinearLayout>
@@ -151,7 +152,8 @@
                                 android:textColor="@color/gray"
                                 android:layout_marginEnd="4dp"
                                 android:layout_marginRight="4dp"
-                                android:text="PROGRESS:"/>
+                                android:textAllCaps="true"
+                                android:text="@string/progress"/>
                             <TextView
                                 android:id="@+id/CardDeck.tvProgress"
                                 android:layout_width="wrap_content"

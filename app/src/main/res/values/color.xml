@@ -7,6 +7,7 @@
     <color name="window_background">#293542</color>
     <color name="edit_text_background">#3d4e63</color>
     <color name="nav_drawer_background">#27303b</color>
+    <color name="light_window_background">#2b3946</color>
     <color name="gray">#4f5e7b</color>
     <color name="white">#ffffffff</color>
     <color name="light_green">#50c180</color>]

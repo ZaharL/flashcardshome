@@ -43,18 +43,24 @@
                 android:textSize="14sp"
                 android:checked="true"
                 android:id="@+id/ReportsActivity.rbDaily" />
-
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:text="@string/weekly"
                 android:textSize="14sp"
                 android:id="@+id/ReportsActivity.rbWeekly" />
+            <RadioButton
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:text="@string/disable"
+                android:textSize="14sp"
+                android:id="@+id/ReportsActivity.rbDisabled" />
         </RadioGroup>
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/ReportsActivity.btnSubscribe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/subscribe"

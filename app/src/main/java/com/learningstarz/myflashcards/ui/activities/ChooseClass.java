@@ -15,8 +15,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import com.learningstarz.myflashcards.R;
-import com.learningstarz.myflashcards.Tools.Tools;
-import com.learningstarz.myflashcards.Types.UserClass;
+import com.learningstarz.myflashcards.tools.Tools;
+import com.learningstarz.myflashcards.types.UserClass;
 
 import java.util.ArrayList;
 

@@ -19,7 +19,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.learningstarz.myflashcards.R;
-import com.learningstarz.myflashcards.Tools.Tools;
-import com.learningstarz.myflashcards.Types.Card;
-import com.learningstarz.myflashcards.Types.Deck;
-import com.learningstarz.myflashcards.Types.User;
+import com.learningstarz.myflashcards.data_storage.DataManager;
+import com.learningstarz.myflashcards.tools.Tools;
+import com.learningstarz.myflashcards.types.Card;
+import com.learningstarz.myflashcards.types.Deck;
+import com.learningstarz.myflashcards.types.User;
 import com.learningstarz.myflashcards.ui.components.NonSwipeableViewPager;
 import com.learningstarz.myflashcards.ui.fragments.FragmentMyDeckTab;
 
@@ -112,17 +112,11 @@ public class MyDecksActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.reports:
                 Intent intent = new Intent(MyDecksActivity.this, ReportsActivity.class);
-                intent.putExtra(Tools.firstActivity_userExtraTag, user);
                 startActivity(intent);
                 break;
             case R.id.logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MyDecksActivity.this);
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                builder.setNegativeButton(R.string.cancel, null);
                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -156,7 +150,6 @@ public class MyDecksActivity extends AppCompatActivity {
         NonSwipeableViewPager viewPager = (NonSwipeableViewPager) findViewById(R.id.MyDeckActivity_viewPager);
         viewPager.setAdapter(new CardsPagerAdapter(getSupportFragmentManager(), MyDecksActivity.this));
 
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.MyDeckActivity_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -184,7 +177,8 @@ public class MyDecksActivity extends AppCompatActivity {
     public class CardsPagerAdapter extends FragmentPagerAdapter {
         public static final int PAGE_COUNT = 3;
 
-        private String[] tabTitles = new String[]{getString(R.string.date), getString(R.string.name), getString(R.string.author)};
+        String author = getString(R.string.author);
+        private String[] tabTitles = new String[]{getString(R.string.date), getString(R.string.name), author.substring(0, author.length() - 1)};
         private Context context;
 
         public CardsPagerAdapter(FragmentManager fm, Context context) {
@@ -194,7 +188,7 @@ public class MyDecksActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return FragmentMyDeckTab.newInstance(position + 1, Tools.sortDecks(myDecks, position + 1));
+            return FragmentMyDeckTab.newInstance(position + 1);
         }
 
         @Override
@@ -291,6 +285,9 @@ public class MyDecksActivity extends AppCompatActivity {
                             data.getString("description")
                     ));
                 }
+
+                DataManager.setDecks(myDecks);
+
                 initViewPager();
                 hideGlobalPB();
             } catch (JSONException e) {
