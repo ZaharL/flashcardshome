@@ -1,6 +1,6 @@
 package com.learningstarz.myflashcards.ui.activities;
 
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import com.learningstarz.myflashcards.interfaces.DataTransferable;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.ui.components.adapters.EditCardsAdapter;
-import com.learningstarz.myflashcards.ui.fragments.CardEditFragment;
 
 /**
  * Created by ZahARin on 08.02.2016.
@@ -45,11 +44,9 @@ public class CardsActivity extends AppCompatActivity implements DataTransferable
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CardEditFragment cardEditFragment =  CardEditFragment.newInstance();
-                android.support.v4.app.FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.add(R.id.CardsActivity_rlContainer, cardEditFragment);
-                transaction.addToBackStack("tag");
-                transaction.commit();
+                Intent editCard = new Intent(CardsActivity.this, EditCardsActivity.class);
+                editCard.putExtra(Tools.deckExtraTag, deck);
+                startActivity(editCard);
             }
         });
     }

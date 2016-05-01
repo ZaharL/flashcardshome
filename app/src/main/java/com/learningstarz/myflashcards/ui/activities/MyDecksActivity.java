@@ -73,7 +73,7 @@ public class MyDecksActivity extends AppCompatActivity {
 
         pbGlobal = (ProgressBar) findViewById(R.id.MyDeckActivity_pbCardsGlobal);
 
-        user = getIntent().getParcelableExtra(Tools.firstActivity_userExtraTag);
+        user = DataManager.getUser();
 
         initiateCards();    // !
         initNavDrawer();    // !  DO NOT REPLACE METHODS
@@ -81,7 +81,7 @@ public class MyDecksActivity extends AppCompatActivity {
     }
 
     /**
-     * Needs to use this after getting extras with user data
+     * Needs to use this after getting user data from DB
      */
     private void initiateCards() {
         Formatter f = new Formatter();

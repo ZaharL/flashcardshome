@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import com.learningstarz.myflashcards.R;
+import com.learningstarz.myflashcards.data_storage.DataManager;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.UserClass;
 
@@ -32,8 +34,7 @@ public class ChooseClass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.choose_activity);
 
-        Bundle data = getIntent().getExtras();
-        alUCl = data.getParcelableArrayList(Tools.firstActivity_userClassExtraTag);
+        alUCl = DataManager.getUserClasses();
 
         ListView lvUserClassesList = (ListView) findViewById(R.id.ChooseActivity_lvClasses);
         lvUserClassesList.setAdapter(new UserClassesAdapter(this, R.layout.choose_class_list_view_item, alUCl));
@@ -71,9 +72,12 @@ public class ChooseClass extends AppCompatActivity {
 
             CheckBox chbChoose = (CheckBox) convertView.findViewById(R.id.ChooseActivity_chbMainCheck);
             chbChoose.setText(uClass.getName());
-            chbChoose.setChecked(uClass.isChecked());
+            if (uClass.isChecked()) {
+                chbChoose.setChecked(true);
+            } else {
+                chbChoose.setChecked(false);
+            }
             chbChoose.setOnCheckedChangeListener(new CheckedListener(uClass));
-
             return convertView;
         }
     }
@@ -88,11 +92,15 @@ public class ChooseClass extends AppCompatActivity {
 
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            userClass.setChecked(isChecked);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(Tools.firstActivity_userClassNameExtraTag, userClass);
-            setResult(RESULT_OK, returnIntent);
-            finish();
+            if (isChecked) {
+                DataManager.setChecked(userClass.getId(), 1);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(Tools.firstActivity_userClassNameExtraTag, userClass);
+                setResult(RESULT_OK, returnIntent);
+                finish();
+            } else {
+                DataManager.setChecked(userClass.getId(), 0);
+            }
         }
     }
 

@@ -7,6 +7,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
+        android:name=".MyFlashcards"
         android:label="@string/app_name"
         android:theme="@style/CommonTheme">
 
@@ -68,6 +69,16 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.MyDecksActivity" />
+        </activity>
+        <activity
+            android:name=".ui.activities.EditCardsActivity"
+            android:label="@string/edit_cards_title"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.CardsActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.CardsActivity" />
         </activity>
     </application>
 

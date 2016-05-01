@@ -141,7 +141,7 @@ public class EditCardsAdapter extends RecyclerSwipeAdapter<EditCardsAdapter.Simp
                         notifyItemRangeChanged(position, cards.size());
                         closeAllItems();
 
-                        DataManager.deleteCardByUId(deck, card);
+                        DataManager.deleteCardByUId(card.getUid());
 
                         //transfer data to activity
                         dtInterface.onSetIntData(cards.size());

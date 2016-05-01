@@ -7,6 +7,7 @@
     <string name="url_host" formatted="false">http://r1.flashcardshome.com/%s</string>
     <string name="url_get_my_decks" formatted="false">http://r1.flashcardshome.com/index.php/api/getMyDecks?token=%s</string>
     <string name="url_delete_deck_card" formatted="false">http://r1.flashcardshome.com/index.php/api/deleteDeckCard?token=%s&amp;cardUId=%s</string>
+    <string name="url_add_deck_card" formatted="false">http://r1.flashcardshome.com/index.php/api/addNewDeckCard?cardUId=%s&amp;deckUId=%s&amp;token=%s&amp;question=%s&amp;answer=%s</string>
 
     <!-- TOTAL-->
     <string name="ok">OK</string>
@@ -81,6 +82,16 @@
     <string name="upload_back_pick">upload back picture</string>
     <string name="face_undecor">FACE</string>
     <string name="back_undecor">BACK</string>
+
+    <!-- EditCardsActivity-->
+    <string name="edit_cards_title">Edit Card</string>
+    <string name="new_card_title">New Card</string>
+    <string name="form_validation">Form validation</string>
+    <string name="dm_err_msg_back_cant_be_empty">Card Back field can\'t be empty</string>
+    <string name="dm_err_msg_face_cant_be_empty">Card Face field can\'t be empty</string>
+    <string name="new_card_created">New card created</string>
+    <string name="something_wrong_try_one">Something wrong. Try one more time</string>
+
 
 
 </resources>

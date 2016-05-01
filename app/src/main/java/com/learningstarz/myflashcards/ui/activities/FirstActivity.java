@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,8 +64,8 @@ public class FirstActivity extends AppCompatActivity {
         Button btnLogin = (Button) findViewById(R.id.SignInActivity_btnLogin);
         btnLogin.setOnClickListener(btnLoginListener);
         initTextViews();
-        initEditTextViews();
         initProgressBars();
+        initEditTextViews();
     }
 
     private void initProgressBars() {
@@ -88,7 +89,6 @@ public class FirstActivity extends AppCompatActivity {
         classProgressbar.setVisibility(View.INVISIBLE);
     }
 
-
     private void initTextViews() {
         TextView tvSignUp = (TextView) findViewById(R.id.tvSignUp);
         tvSignUp.setText(Html.fromHtml(getString(R.string.sign_up_now)));
@@ -107,7 +107,8 @@ public class FirstActivity extends AppCompatActivity {
     }
 
     private void initEditTextViews() {
-        ((EditText) findViewById(R.id.SignInActivity_etLogin)).addTextChangedListener(new TextWatcher() {
+        EditText etLogin = (EditText) findViewById(R.id.SignInActivity_etLogin);
+        etLogin.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -129,6 +130,13 @@ public class FirstActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
             }
         });
+        //put previous used email from database to edit text
+        etLogin.setText(DataManager.getNLUserEmail());
+//        UserClass ucl = DataManager.getCheckedClass();
+//        if (ucl != null) {
+//            returnedClass = ucl;
+//            toggleChooseClassButton(true);
+//        }
     }
 
     View.OnClickListener btnLoginListener = new View.OnClickListener() {
@@ -183,6 +191,7 @@ public class FirstActivity extends AppCompatActivity {
                 Formatter urlCreator = new Formatter();
                 urlCreator.format(getString(R.string.url_log_in), validEmail, password, returnedClass.getId());
                 new LogInTask().execute(urlCreator.toString());
+                Log.d("MyLogs", ""+urlCreator.toString());
                 urlCreator.close();
             }
         }
@@ -296,9 +305,10 @@ public class FirstActivity extends AppCompatActivity {
                             data.getString("token"),
                             data.getInt("roleId"));
                     Intent loginIntent = new Intent(FirstActivity.this, MyDecksActivity.class);
-                    loginIntent.putExtra(Tools.firstActivity_userExtraTag, resUser);
+//                    loginIntent.putExtra(Tools.firstActivity_userExtraTag, resUser);
 
-                    DataManager.setUser(resUser); // save userdata in class, to get access from anywhere
+                    // save userdata in db, to get access from anywhere
+                    DataManager.setUser(resUser);
 
                     startActivity(loginIntent);
                     hideLoginPB();
@@ -370,13 +380,7 @@ public class FirstActivity extends AppCompatActivity {
                     JSONObject uClass = classes.getJSONObject(i);
                     userClass = new UserClass(
                             uClass.getInt("id"),
-                            uClass.getString("name"),
-                            uClass.getString("section_id"),
-                            uClass.getInt("teacher_id"),
-                            uClass.getString("class_code"),
-                            uClass.getString("call_number"),
-                            uClass.getString("url"),
-                            uClass.getString("baseurl"));
+                            uClass.getString("name"));
                     userClassesArray.add(userClass);
                 }
             } catch (JSONException e) {
@@ -384,17 +388,19 @@ public class FirstActivity extends AppCompatActivity {
             }
 
             userClassesArray.trimToSize();
-            DataManager.setUserClasses(userClassesArray);
             instantiateClassesButton(userClassesArray);
+
             hideClassPB();
         }
     }
 
-    private void instantiateClassesButton(ArrayList<UserClass> userClasses) {
+    private void instantiateClassesButton(ArrayList<UserClass> usrClArray) {
         toggleChooseClassButton(false);
-        if (!userClasses.isEmpty()) {
+        if (!usrClArray.isEmpty()) {
+            DataManager.setNLUserEmail(validEmail);
+            DataManager.setUserClasses(usrClArray);
             btnChooseClass.setEnabled(true);
-            ClassesListener cl = new ClassesListener(userClasses);
+            ClassesListener cl = new ClassesListener(/*userClasses*/);
             btnChooseClass.setOnClickListener(cl);
         } else {
             btnChooseClass.setEnabled(false);
@@ -404,16 +410,15 @@ public class FirstActivity extends AppCompatActivity {
 
     class ClassesListener implements View.OnClickListener {
 
-        ArrayList<UserClass> userClasses;
+//        ArrayList<UserClass> userClasses;
 
-        public ClassesListener(ArrayList<UserClass> userClasses) {
-            this.userClasses = userClasses;
+        public ClassesListener(/*ArrayList<UserClass> userClasses*/) {
+//            this.userClasses = userClasses;
         }
 
         @Override
         public void onClick(View v) {
             Intent choose = new Intent(FirstActivity.this, ChooseClass.class);
-            choose.putExtra(Tools.firstActivity_userClassExtraTag, userClasses);
             startActivityForResult(choose, 1);
         }
     }

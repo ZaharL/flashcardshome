@@ -3,15 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/window_background"
-    android:orientation="vertical"
-    tools:context="com.learningstarz.myflashcards.ui.fragments.CardEditFragment">
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar"
-        android:id="@+id/CardEditFragment.toolbar"/>
+        android:id="@+id/CardEditActivity.toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
                     android:text="@string/question"/>
 
                 <EditText
-                    android:id="@+id/CardEditFragment.etFace"
+                    android:id="@+id/CardEditActivity.etFace"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/face_undecor"
@@ -71,7 +71,7 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/CardEditFragment.ivFace"
+                        android:id="@+id/CardEditActivity.ivFace"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
@@ -90,7 +90,7 @@
                     android:text="@string/answer"/>
 
                 <EditText
-                    android:id="@+id/CardEditFragment.etBack"
+                    android:id="@+id/CardEditActivity.etBack"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/back_undecor"
@@ -134,7 +134,7 @@
                     </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/CardEditFragment.ivBack"
+                        android:id="@+id/CardEditActivity.ivBack"
                         android:layout_width="match_parent"
                         android:layout_height="120dp"
                         android:scaleType="centerCrop"
@@ -143,7 +143,7 @@
                 </FrameLayout>
 
                 <Button
-                    android:id="@+id/CardEditFragment.btnSave"
+                    android:id="@+id/CardEditActivity.btnSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_orange_background"
