@@ -91,7 +91,10 @@
     <string name="dm_err_msg_face_cant_be_empty">Card Face field can\'t be empty</string>
     <string name="new_card_created">New card created</string>
     <string name="something_wrong_try_one">Something wrong. Try one more time</string>
-
-
+    <string name="take_a_photo">Take a photo</string>
+    <string name="choose_a_picture">Choose a picture</string>
+    <string name="image">Image</string>
+    <string name="select_image">Select image</string>
+    <string name="dir_created">Directory %s created</string>
 
 </resources>
