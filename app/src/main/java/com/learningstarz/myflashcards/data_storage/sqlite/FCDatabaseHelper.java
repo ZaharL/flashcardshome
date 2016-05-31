@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.learningstarz.myflashcards.types.Card;
 import com.learningstarz.myflashcards.types.Deck;
@@ -16,7 +15,6 @@ import com.learningstarz.myflashcards.types.User;
 import com.learningstarz.myflashcards.types.UserClass;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ZahARin on 06.03.2016.
@@ -94,9 +92,8 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
             KEY_CHECKED + " INTEGER DEFAULT 0" + ")";
     //DECK table create statement
     public static final String CREATE_TABLE_DECK = "CREATE TABLE " + TABLE_DECK + "(" +
-            KEY_ID + " INTEGER PRIMARY KEY," +
+            KEY_EXT_ID + " INTEGER PRIMARY KEY," +
             KEY_CLASS_ID + " INTEGER," +
-            KEY_EXT_ID + " INTEGER," +
             KEY_UID + " TEXT," +
             KEY_DECK_TITLE + " TEXT," +
             KEY_AUTHOR + " TEXT," +
@@ -111,9 +108,8 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
             KEY_DESCRIPTION + " TEXT" + ")";
     //CARD table crate statement
     public static final String CREATE_TABLE_CARD = "CREATE TABLE " + TABLE_CARD + "(" +
-            KEY_ID + " INTEGER PRIMARY KEY," +
+            KEY_EXT_ID + " INTEGER PRIMARY KEY," +
             KEY_DECK_ID + " INTEGER," +
-            KEY_EXT_ID + " INTEGER," +
             KEY_UID + " TEXT," +
             KEY_LAST_DATE_UPDATED + " INTEGER," +
             KEY_DECK_UID + " TEXT," +
@@ -158,12 +154,10 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.beginTransactionNonExclusive();
         for (int i = 0; i < cards.size(); i++) {
-            int row_id = i + 1;
             Card card = cards.get(i);
             String sql = "INSERT OR REPLACE INTO " + TABLE_CARD + " ( " +
-                    KEY_ID + ", " +
-                    KEY_DECK_ID + ", " +
                     KEY_EXT_ID + ", " +
+                    KEY_DECK_ID + ", " +
                     KEY_UID + ", " +
                     KEY_LAST_DATE_UPDATED + ", " +
                     KEY_DECK_UID + ", " +
@@ -175,16 +169,15 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
                     KEY_CARD_TIME + ", " +
                     KEY_KNOW_STATUS +
                     " ) VALUES ( " +
-                    row_id + ", " +
-                    deckId + ", " +
-                    card.getId() + ", \"" +
+                    card.getId() + ", " +
+                    deckId + ", \"" +
                     card.getUid() + "\", " +
                     card.getTimestampLastDateUpdated() + ", \"" +
                     card.getDeckUid() + "\", \"" +
                     card.getQuestion() + "\", \"" +
                     card.getAnswer() + "\", \"" +
-                    card.getImage1() + "\", \"" +
-                    card.getImage2() + "\", \"" +
+                    card.getImage1URL() + "\", \"" +
+                    card.getImage2URL() + "\", \"" +
                     card.getImagePath() + "\", " +
                     card.getCardTime() + ", " +
                     card.getKnowStatus() + " )";
@@ -233,6 +226,7 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
                 ));
             } while (c.moveToNext());
         }
+        c.close();
         return result;
     }
 
@@ -241,12 +235,10 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
         for (int i = 0; i < decks.size(); i++) {
             SQLiteDatabase db = getWritableDatabase();
             db.beginTransactionNonExclusive();
-            int row_id = i + 1;
             Deck deck = decks.get(i);
             String sql = "INSERT OR REPLACE INTO " + TABLE_DECK + " ( " +
-                    KEY_ID + "," +
-                    KEY_CLASS_ID + "," +
                     KEY_EXT_ID + "," +
+                    KEY_CLASS_ID + "," +
                     KEY_UID + "," +
                     KEY_DECK_TITLE + "," +
                     KEY_AUTHOR + "," +
@@ -260,9 +252,8 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
                     KEY_KEY_WORDS + "," +
                     KEY_DESCRIPTION +
                     " ) VALUES ( " +
-                    row_id + ", " +
-                    getCheckedClassId() + ", " +
-                    deck.getId() + ", \"" +
+                    deck.getId() + ", " +
+                    getCheckedClassId() + ", \"" +
                     deck.getUid() + "\", \"" +
                     deck.getTitle() + "\", \"" +
                     deck.getAuthor() + "\", " +
@@ -282,7 +273,7 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
             db.setTransactionSuccessful();
             db.endTransaction();
             db.close();
-            setUserDeckCards(deck.getCards(), row_id);
+            setUserDeckCards(deck.getCards(), deck.getId());
         }
     }
 
@@ -301,7 +292,7 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
                         c.getString(c.getColumnIndex(KEY_UID)),
                         c.getString(c.getColumnIndex(KEY_DECK_TITLE)),
                         c.getString(c.getColumnIndex(KEY_AUTHOR)),
-                        getUserDeckCards(c.getInt(c.getColumnIndex(KEY_ID))),
+                        getUserDeckCards(c.getInt(c.getColumnIndex(KEY_EXT_ID))),
                         c.getInt(c.getColumnIndex(KEY_CARDS_COUNT)),
                         c.getLong(c.getColumnIndex(KEY_DATE_CREATED)),
                         c.getLong(c.getColumnIndex(KEY_LAST_DATE_UPDATED)),
@@ -320,13 +311,13 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteDeckByUID(String uid) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_DECK + " WHERE " + KEY_UID + " = " + uid);
+        db.execSQL("DELETE FROM " + TABLE_DECK + " WHERE " + KEY_UID + " = \"" + uid + "\"");
         db.close();
     }
 
     public void deleteCardByUID(String uid) {
         SQLiteDatabase db = getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_CARD + " WHERE " + KEY_UID + " = " + uid);
+        db.execSQL("DELETE FROM " + TABLE_CARD + " WHERE " + KEY_UID + " = \"" + uid + "\"");
         db.close();
     }
 
@@ -482,11 +473,13 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT " + KEY_TOKEN + " FROM " + TABLE_USER;
         Cursor c = db.rawQuery(selectQuery, null);
-        String usr = null;
+        String usr = "";
         if (c != null) {
             c.moveToFirst();
             usr = c.getString(c.getColumnIndex(KEY_TOKEN));
+            c.close();
         }
+
         return usr;
     }
 

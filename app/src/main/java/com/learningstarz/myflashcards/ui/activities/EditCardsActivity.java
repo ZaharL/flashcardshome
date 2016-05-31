@@ -1,19 +1,18 @@
 package com.learningstarz.myflashcards.ui.activities;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,33 +20,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.internal.http.multipart.MultipartEntity;
 import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.data_storage.DataManager;
+import com.learningstarz.myflashcards.tools.DownloadImageTask;
 import com.learningstarz.myflashcards.tools.Tools;
+import com.learningstarz.myflashcards.types.Card;
 import com.learningstarz.myflashcards.types.Deck;
-import com.learningstarz.myflashcards.ui.async_tasks.PostRequestSenderAsyncTask;
 
-
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.LineNumberReader;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by ZahARin on 01.05.2016.
@@ -57,6 +47,7 @@ public class EditCardsActivity extends AppCompatActivity {
     private EditText etQuestion;
     private EditText etAnswer;
     private Deck deck;
+    private Card card;
     AlertDialog alert;
 
     ImageView ivFace;
@@ -70,6 +61,7 @@ public class EditCardsActivity extends AppCompatActivity {
     public static int TAKE_PHOTO_ONE = 11;
     public static int SELECT_PICTURE_TWO = 2;
     public static int TAKE_PHOTO_TWO = 22;
+    public static int NECESSARY_WIDTH = 512;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,11 +69,16 @@ public class EditCardsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_card_edit);
 
         deck = getIntent().getParcelableExtra(Tools.deckExtraTag);
+        card = getIntent().getParcelableExtra(Tools.cardsExtraTag);
 
         Button btnSave = (Button) findViewById(R.id.CardEditActivity_btnSave);
         btnSave.setOnClickListener(saveListener);
         etQuestion = (EditText) findViewById(R.id.CardEditActivity_etFace);
         etAnswer = (EditText) findViewById(R.id.CardEditActivity_etBack);
+        ivFace = (ImageView) findViewById(R.id.CardEditActivity_ivFace);
+        ivBack = (ImageView) findViewById(R.id.CardEditActivity_ivBack);
+
+        if (card != null) initCard();
 
         initToolbar();
         initImageButtons();
@@ -96,8 +93,15 @@ public class EditCardsActivity extends AppCompatActivity {
         }
     }
 
+    private void initCard() {
+        new DownloadImageTask(ivFace).execute(String.format(getString(R.string.url_host), card.getImagePath() + card.getImage1URL()));
+        new DownloadImageTask(ivBack).execute(String.format(getString(R.string.url_host), card.getImagePath() + card.getImage2URL()));
+        etQuestion.setText(card.getQuestion());
+        etAnswer.setText(card.getAnswer());
+    }
+
     private void initImageButtons() {
-        ivFace = (ImageView) findViewById(R.id.CardEditActivity_ivFace);
+
         ivFace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,7 +129,7 @@ public class EditCardsActivity extends AppCompatActivity {
                 alert.show();
             }
         });
-        ivBack = (ImageView) findViewById(R.id.CardEditActivity_ivBack);
+
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -171,69 +175,47 @@ public class EditCardsActivity extends AppCompatActivity {
                 alDialog.show();
             } else {
                 Formatter urlCreator = new Formatter();
-                urlCreator.format(getString(R.string.url_add_deck_card),
-                        Tools.createUID(),
-                        deck.getUid(),
-                        DataManager.getUserToken(),
-                        etQuestion.getText().toString(),
-                        etAnswer.getText().toString());
+                if (card != null) {
+                    urlCreator.format(getString(R.string.url_update_deck_card),
+                            card.getUid(),
+                            deck.getUid(),
+                            DataManager.getUserToken(),
+                            etQuestion.getText().toString(),
+                            etAnswer.getText().toString());
+                } else {
+                    urlCreator.format(getString(R.string.url_add_deck_card),
+                            Tools.createUID(),
+                            deck.getUid(),
+                            DataManager.getUserToken(),
+                            etQuestion.getText().toString(),
+                            etAnswer.getText().toString());
+                }
+
                 String url = urlCreator.toString();
 
-
-//                HttpPost uploadFile = new HttpPost(url);
-//                MultipartEntityBuilder builder = MultipartEntityBuilder.create();
-//                builder.addBinaryBody(getString(R.string.image_parameter),
-//                        new File(fileToSend1.getPath()), ContentType.APPLICATION_OCTET_STREAM, fileToSend1.getName());
-//                HttpEntity multipart = builder.build();
-//                uploadFile.setEntity(multipart);
-
-
                 new AsyncTask<String, Void, String>() {
+                    Context c;
+                    @Override
+                    protected void onPreExecute() {
+                         c = EditCardsActivity.this;
+                    }
+
                     @Override
                     protected String doInBackground(String... params) {
                         try {
-                            Log.w("MyWarning", "url = " + params[0]);
-                            Log.w("MyWarning", "file name = " + fileToSend1.getName());
-                            Tools.uploadMultipart(params[0],fileToSend1,fileToSend2);
+                            Tools.uploadMultipart(params[0], fileToSend1, fileToSend2);
                         } catch (IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
                         return null;
                     }
+
+                    @Override
+                    protected void onPostExecute(String s) {
+                        Toast.makeText(c, R.string.card_added, Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 }.execute(url);
-//
-//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//                Bitmap bm = BitmapFactory.decodeFile(fileToSend1.getPath(), options);
-//                bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//                byte[] imageBytes = baos.toByteArray();
-//                String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-//
-//                Log.d("MyLogs", "encoded Image = " + encodedImage);
-
-
-                PostRequestSenderAsyncTask prs = new PostRequestSenderAsyncTask();
-                prs.execute(url);
-//                String res = null;
-//                try {
-//                    res = prs.get();
-//                } catch (InterruptedException | ExecutionException e) {
-//                    e.printStackTrace();
-//                }
-//                try {
-//                    JSONObject result = new JSONObject(res).getJSONObject(Tools.jsonResult).getJSONObject(Tools.jsonStatus);
-//                    int code = result.getInt(Tools.jsonStatusCode);
-//                    if (code == Tools.errOk) {
-//                        Toast.makeText(EditCardsActivity.this, R.string.new_card_created, Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(EditCardsActivity.this, R.string.something_wrong_try_one, Toast.LENGTH_SHORT).show();
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                urlCreator.close();
-//                finish();
             }
         }
     };
@@ -241,16 +223,56 @@ public class EditCardsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            alert.cancel();
+            if (alert != null)
+                alert.cancel();
             if (requestCode == SELECT_PICTURE_ONE) {
-                Uri uri = data.getData();
-                imagePath1 = uri.getPath();
-                fileToSend1 = new File(String.valueOf(uri));
+                File file;
+                try {
+                    file = createImageFile();
+                    FileOutputStream os = new FileOutputStream(file);
+
+                    Uri uri = data.getData();
+                    InputStream is = getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                    try {
+                        int nh = (int) (bitmap.getHeight() * ((float) NECESSARY_WIDTH / bitmap.getWidth()));
+                        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, NECESSARY_WIDTH, nh, true);
+                        ivFace.setDrawingCacheEnabled(false);
+                        ivFace.setImageBitmap(scaled);
+                        scaled.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                    } catch (NullPointerException e) {
+                        Toast.makeText(this, R.string.image_violated, Toast.LENGTH_LONG).show();
+                    }
+                    imagePath1 = file.getPath();
+                    fileToSend1 = file;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if (requestCode == SELECT_PICTURE_TWO) {
-                Uri uri = data.getData();
-                imagePath2 = uri.getPath();
-                fileToSend2 = new File(String.valueOf(uri));
+                try {
+                    File file = createImageFile();
+                    FileOutputStream os = new FileOutputStream(file);
+
+                    Uri uri = data.getData();
+                    InputStream is = getContentResolver().openInputStream(uri);
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+
+                    try {
+                        int nh = (int) (bitmap.getHeight() * ((float) NECESSARY_WIDTH / bitmap.getWidth()));
+                        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, NECESSARY_WIDTH, nh, true);
+                        ivBack.setDrawingCacheEnabled(false);
+                        ivBack.setImageBitmap(scaled);
+                        scaled.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                    } catch (NullPointerException e) {
+                        Toast.makeText(this, R.string.image_violated, Toast.LENGTH_LONG).show();
+                    }
+                    imagePath2 = file.getPath();
+                    fileToSend2 = file;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             if (requestCode == TAKE_PHOTO_ONE) {
                 try {
@@ -259,7 +281,7 @@ public class EditCardsActivity extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     ivFace.setImageBitmap(bitmap);
                     assert bitmap != null;
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
                     imagePath1 = file.getPath();
@@ -275,7 +297,7 @@ public class EditCardsActivity extends AppCompatActivity {
                     Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                     ivBack.setImageBitmap(bitmap);
                     assert bitmap != null;
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
                     os.flush();
                     os.close();
                     imagePath2 = file.getPath();

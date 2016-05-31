@@ -19,6 +19,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,7 +82,7 @@ public class MyDecksActivity extends AppCompatActivity {
     }
 
     /**
-     * Needs to use this after getting user data from DB
+     * Needs to use this after getting USER DATA from DB
      */
     private void initiateCards() {
         Formatter f = new Formatter();

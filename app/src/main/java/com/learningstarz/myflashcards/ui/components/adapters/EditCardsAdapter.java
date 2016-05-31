@@ -3,8 +3,10 @@ package com.learningstarz.myflashcards.ui.components.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +21,12 @@ import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.data_storage.DataManager;
 import com.learningstarz.myflashcards.interfaces.DataTransferable;
 import com.learningstarz.myflashcards.tools.DownloadImageTask;
+import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Card;
 import com.learningstarz.myflashcards.types.Deck;
-import com.learningstarz.myflashcards.ui.activities.MyDecksActivity;
+import com.learningstarz.myflashcards.ui.activities.EditCardsActivity;
 import com.learningstarz.myflashcards.ui.async_tasks.DeleteCardAsyncTask;
 
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -80,7 +82,10 @@ public class EditCardsAdapter extends RecyclerSwipeAdapter<EditCardsAdapter.Simp
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO create transition to edit card
+                Intent editCardIntent = new Intent(context, EditCardsActivity.class);
+                editCardIntent.putExtra(Tools.deckExtraTag, deck);
+                editCardIntent.putExtra(Tools.cardsExtraTag, card);
+                context.startActivity(editCardIntent);
             }
         });
 
@@ -108,22 +113,28 @@ public class EditCardsAdapter extends RecyclerSwipeAdapter<EditCardsAdapter.Simp
 
 
         String quest = context. getString(R.string.face) + card.getQuestion().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll(" ", "");
-        String answ = context. getString(R.string.back) + card.getQuestion().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll(" ", "");
+        String answ = context. getString(R.string.back) + card.getAnswer().replaceAll("<p>", "").replaceAll("</p>", "").replaceAll(" ", "");
 
         viewHolder.tvFace.setText(Html.fromHtml(quest));
         viewHolder.tvBack.setText(Html.fromHtml(answ));
-        Formatter fm = new Formatter();
-        if (!card.getImage1().equals("")) {
-            String imageFacePath = card.getImagePath() + card.getImage1();
+
+        if (!card.getImage1URL().equals("")) {
+            String imageFacePath = card.getImagePath() + card.getImage1URL();
+            Formatter fm = new Formatter();
             fm.format(context.getString(R.string.url_host, imageFacePath));
             new DownloadImageTask(viewHolder.ivFace).execute(fm.toString());
+            fm.flush();
+            fm.close();
         }
-        if (!card.getImage2().equals("")) {
-            String imageBackPath = card.getImagePath() + card.getImage2();
+        if (!card.getImage2URL().equals("")) {
+            String imageBackPath = card.getImagePath() + card.getImage2URL();
+            Formatter fm = new Formatter();
             fm.format(context.getString(R.string.url_host, imageBackPath));
             new DownloadImageTask(viewHolder.ivBack).execute(fm.toString());
+            fm.flush();
+            fm.close();
         }
-        fm.close();
+
 
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
