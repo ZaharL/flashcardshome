@@ -1,6 +1,8 @@
 package com.learningstarz.myflashcards.ui.components.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,20 +21,25 @@ import com.learningstarz.myflashcards.data_storage.DataManager;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.ui.activities.CardsActivity;
+import com.learningstarz.myflashcards.ui.activities.MyDecksActivity;
+import com.learningstarz.myflashcards.ui.async_tasks.DeleteCardAsyncTask;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 
 /**
  * Created by ZahARin on 01.02.2016.
  */
 public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.SimpleViewHolder> {
     Context mContext;
+    private String token;
     ArrayList<Deck> decks;
     private SwipeLayout prevLayout = null; // previous layout. needs to close it when new opens
 
-    public MyDeckCardAdapter(Context context, int sortType) {
+    public MyDeckCardAdapter(Context context, int sortType, String token) {
         this.decks = Tools.sortDecks(DataManager.getDecks(), sortType);
         this.mContext = context;
+        this.token = token;
     }
 
     public class SimpleViewHolder extends RecyclerView.ViewHolder {
@@ -103,13 +110,26 @@ public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.Si
         viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mItemManger.removeShownLayouts(viewHolder.swipeLayout);
-                DataManager.deleteDeckByUId(deck.getUid());
-                decks.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, decks.size());
-                closeAllItems();
-                //TODO Create delete card_edit from server mechanism
+                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(mContext);
+                deleteDialog.setTitle(R.string.EditDeckActivity_Dialog_DeleteDeck_Title);
+                deleteDialog.setMessage(R.string.EditDeckActivity_Dialog_DeleteDeck_Message);
+                deleteDialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Formatter fm = new Formatter();
+                        fm.format(mContext.getString(R.string.url_delete_deck), token, deck.getUid());
+                        mItemManger.removeShownLayouts(viewHolder.swipeLayout);
+                        DataManager.deleteDeckByUId(deck.getUid());
+                        decks.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, decks.size());
+                        closeAllItems();
+                        new DeleteCardAsyncTask(mContext).execute(fm.toString());
+                        fm.close();
+                    }
+                });
+                deleteDialog.setNegativeButton(R.string.no, null);
+                deleteDialog.show();
             }
         });
 

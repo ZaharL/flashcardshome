@@ -48,6 +48,7 @@ public class EditCardsActivity extends AppCompatActivity {
     private EditText etAnswer;
     private Deck deck;
     private Card card;
+    private String userToken;
     AlertDialog alert;
 
     ImageView ivFace;
@@ -70,6 +71,8 @@ public class EditCardsActivity extends AppCompatActivity {
 
         deck = getIntent().getParcelableExtra(Tools.deckExtraTag);
         card = getIntent().getParcelableExtra(Tools.cardsExtraTag);
+
+        userToken = DataManager.getUserToken();
 
         Button btnSave = (Button) findViewById(R.id.CardEditActivity_btnSave);
         btnSave.setOnClickListener(saveListener);
@@ -179,14 +182,14 @@ public class EditCardsActivity extends AppCompatActivity {
                     urlCreator.format(getString(R.string.url_update_deck_card),
                             card.getUid(),
                             deck.getUid(),
-                            DataManager.getUserToken(),
+                            userToken,
                             etQuestion.getText().toString(),
                             etAnswer.getText().toString());
                 } else {
                     urlCreator.format(getString(R.string.url_add_deck_card),
                             Tools.createUID(),
                             deck.getUid(),
-                            DataManager.getUserToken(),
+                            userToken,
                             etQuestion.getText().toString(),
                             etAnswer.getText().toString());
                 }

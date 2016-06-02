@@ -14,12 +14,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,6 +29,7 @@ import android.widget.Toast;
 
 import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.data_storage.DataManager;
+import com.learningstarz.myflashcards.interfaces.TaskCompletable;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Card;
 import com.learningstarz.myflashcards.types.Deck;
@@ -54,11 +53,11 @@ import java.util.Formatter;
 /**
  * Created by ZahARin on 14.01.2016.
  */
-public class MyDecksActivity extends AppCompatActivity {
+public class MyDecksActivity extends AppCompatActivity implements TaskCompletable {
     private boolean doubleBackToExitPressedOnce = false;
 
-    private User user;
-    private ArrayList<Deck> myDecks;
+    private static User user;
+    private static String token;
 
     private DrawerLayout mDrawer;
     Toolbar toolbar;
@@ -75,8 +74,9 @@ public class MyDecksActivity extends AppCompatActivity {
         pbGlobal = (ProgressBar) findViewById(R.id.MyDeckActivity_pbCardsGlobal);
 
         user = DataManager.getUser();
+        token = user.getToken();
 
-        initiateCards();    // !
+        initiateDecks();    // !
         initNavDrawer();    // !  DO NOT REPLACE METHODS
         initToolbar();      // !
     }
@@ -84,11 +84,8 @@ public class MyDecksActivity extends AppCompatActivity {
     /**
      * Needs to use this after getting USER DATA from DB
      */
-    private void initiateCards() {
-        Formatter f = new Formatter();
-        f.format(getString(R.string.url_get_my_decks), user.getToken());
-        new SyncUserCards().execute(f.toString());
-        f.close();
+    private void initiateDecks() {
+        Tools.syncAll(MyDecksActivity.this, token, pbGlobal);
     }
 
     private void initNavDrawer() {
@@ -107,6 +104,12 @@ public class MyDecksActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Tools.syncAll(MyDecksActivity.this, token, pbGlobal);
     }
 
     public void selectDrawerItem(MenuItem item) {
@@ -130,7 +133,9 @@ public class MyDecksActivity extends AppCompatActivity {
                 builder.setMessage(R.string.are_you_sure);
                 builder.show();
                 break;
-
+            case R.id.sync:
+                Tools.syncAll(MyDecksActivity.this, token, pbGlobal);
+                break;
         }
         item.setCheckable(false);
         mDrawer.closeDrawers();
@@ -149,18 +154,10 @@ public class MyDecksActivity extends AppCompatActivity {
 
     private void initViewPager() {
         NonSwipeableViewPager viewPager = (NonSwipeableViewPager) findViewById(R.id.MyDeckActivity_viewPager);
-        viewPager.setAdapter(new CardsPagerAdapter(getSupportFragmentManager(), MyDecksActivity.this));
+        viewPager.setAdapter(new CardsPagerAdapter(getSupportFragmentManager()));
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.MyDeckActivity_tabLayout);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    public void showGlobalPB() {
-        pbGlobal.setVisibility(View.VISIBLE);
-    }
-
-    public void hideGlobalPB() {
-        pbGlobal.setVisibility(View.GONE);
     }
 
     @Override
@@ -175,21 +172,29 @@ public class MyDecksActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void onBackgroundTaskCompleted(Object result) {
+
+    }
+
+    @Override
+    public void onBackgroundTaskCompleted(ArrayList<Deck> result) {
+        initViewPager();
+    }
+
     public class CardsPagerAdapter extends FragmentPagerAdapter {
         public static final int PAGE_COUNT = 3;
 
         String author = getString(R.string.author);
         private String[] tabTitles = new String[]{getString(R.string.date), getString(R.string.name), author.substring(0, author.length() - 1)};
-        private Context context;
 
-        public CardsPagerAdapter(FragmentManager fm, Context context) {
+        public CardsPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.context = context;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return FragmentMyDeckTab.newInstance(position + 1);
+            return FragmentMyDeckTab.newInstance(position + 1, token);
         }
 
         @Override
@@ -200,100 +205,6 @@ public class MyDecksActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             return tabTitles[position];
-        }
-    }
-
-    private class SyncUserCards extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            myDecks = new ArrayList<>();
-            showGlobalPB();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-
-            try {
-                URL url = new URL(params[0]);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setRequestMethod("GET");
-                httpURLConnection.connect();
-
-                InputStream is = httpURLConnection.getInputStream();
-                BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-                String line = "";
-                StringBuilder sb = new StringBuilder();
-
-                while ((line = br.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                result = sb.toString();
-
-                br.close();
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            try {
-                JSONObject firstData = new JSONObject(s);
-                JSONArray arrayOfData = firstData.getJSONObject(Tools.jsonResult).getJSONArray(Tools.jsonData);
-                for (int i = 0; i < arrayOfData.length(); i++) {
-                    JSONObject data = arrayOfData.getJSONObject(i);
-
-                    JSONArray cards = data.getJSONArray(Tools.jsonCards);
-                    ArrayList<Card> cardsArray = new ArrayList<>(cards.length());
-                    for (int j = 0; j < cards.length(); j++) {
-                        JSONObject card = cards.getJSONObject(j);
-                        cardsArray.add(new Card(
-                                card.getInt("id"),
-                                card.getString("uid"),
-                                card.getInt("lastDateUpdated"),
-                                card.getString("deckUId"),
-                                card.getString("question"),
-                                card.getString("answer"),
-                                card.getString("image"),
-                                card.getString("image2"),
-                                card.getString("imagepath"),
-                                card.getInt("cardTime"),
-                                card.getInt("knowStatus")
-                        ));
-                    }
-                    myDecks.add(new Deck(
-                            data.getInt("id"),
-                            data.getString("uid"),
-                            data.getString("title"),
-                            data.getString("author"),
-                            cardsArray,
-                            data.getInt("cardsCount"),
-                            data.getInt("dateCreated"),
-                            data.getInt("lastDateUpdated"),
-                            data.getInt("progress"),
-                            data.getInt("deckType"),
-                            data.getInt("owner"),
-                            data.getInt("deckTime"),
-                            data.getString("keywords"),
-                            data.getString("description")
-                    ));
-                }
-
-                DataManager.setDecks(myDecks);
-
-                initViewPager();
-                hideGlobalPB();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }
     }
 

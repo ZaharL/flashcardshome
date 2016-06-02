@@ -70,21 +70,10 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/EditDeckActivity.etDeckName"
-                    style="@style/EditTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/deck_name"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:textColorHint="@color/light_gray" />
-
-                <EditText
                     android:id="@+id/EditDeckActivity.etTitle"
                     style="@style/EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
                     android:hint="@string/title"
                     android:paddingBottom="12dp"
                     android:paddingTop="12dp"

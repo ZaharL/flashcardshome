@@ -25,12 +25,15 @@ import java.util.ArrayList;
  */
 public class FragmentMyDeckTab extends Fragment {
     public static final String PAGE = "PAGE";
+    public static final String TOKEN = "TOKEN";
 
     private int mPage;
+    private String mToken;
 
-    public static FragmentMyDeckTab newInstance(int page) {
+    public static FragmentMyDeckTab newInstance(int page, String token) {
         Bundle args = new Bundle();
         args.putInt(PAGE, page);
+        args.putString(TOKEN, token);
         FragmentMyDeckTab fragment = new FragmentMyDeckTab();
         fragment.setArguments(args);
         return fragment;
@@ -41,13 +44,13 @@ public class FragmentMyDeckTab extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(PAGE);
+        mToken = getArguments().getString(TOKEN);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_deck_tab, container, false);
-//        final Animation fabAnimOpen = new AnimationUtils().loadAnimation(getContext(), R.anim.fab_anim_open);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.MyDeckFragmentTab_fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +63,7 @@ public class FragmentMyDeckTab extends Fragment {
         rv.hasFixedSize();
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(llm);
-        rv.setAdapter(new MyDeckCardAdapter(getContext(), mPage));
+        rv.setAdapter(new MyDeckCardAdapter(getContext(), mPage, mToken));
         return view;
     }
 }

@@ -36,6 +36,10 @@ public class DataManager {
         db.setUserDecks(decks);
     }
 
+    public static void setDeck(Deck deck) {
+        db.setUserDeck(deck);
+    }
+
     public static ArrayList<Deck> getDecks() {
         return db.getUserDecks();
     }

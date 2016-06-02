@@ -277,6 +277,49 @@ public class FCDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void setUserDeck(Deck deck) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransactionNonExclusive();
+        String sql = "INSERT OR REPLACE INTO " + TABLE_DECK + " ( " +
+                KEY_EXT_ID + "," +
+                KEY_CLASS_ID + "," +
+                KEY_UID + "," +
+                KEY_DECK_TITLE + "," +
+                KEY_AUTHOR + "," +
+                KEY_CARDS_COUNT + "," +
+                KEY_DATE_CREATED + "," +
+                KEY_LAST_DATE_UPDATED + "," +
+                KEY_PROGRESS + "," +
+                KEY_DECK_TYPE + "," +
+                KEY_OWNER + "," +
+                KEY_DECK_TIME + "," +
+                KEY_KEY_WORDS + "," +
+                KEY_DESCRIPTION +
+                " ) VALUES ( " +
+                deck.getId() + ", " +
+                getCheckedClassId() + ", \"" +
+                deck.getUid() + "\", \"" +
+                deck.getTitle() + "\", \"" +
+                deck.getAuthor() + "\", " +
+                deck.getCardsCount() + ", " +
+                deck.getTimestampDateCreated() + ", " +
+                deck.getTimestampLastDateUpdated() + ", " +
+                deck.getProgress() + ", " +
+                deck.getDeckType() + ", " +
+                deck.getOwner() + ", " +
+                deck.getDeckTime() + ", \"" +
+                deck.getKeyWords() + "\", \"" +
+                deck.getDescription() + "\" )";
+
+        SQLiteStatement stmt = db.compileStatement(sql);
+        stmt.execute();
+        stmt.clearBindings();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
+        setUserDeckCards(deck.getCards(), deck.getId());
+    }
+
     public ArrayList<Deck> getUserDecks() {
         ArrayList<Deck> res = new ArrayList<>();
 

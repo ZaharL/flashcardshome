@@ -41,7 +41,6 @@
                 android:layout_height="44dp"
                 android:text="@string/daily"
                 android:textSize="14sp"
-                android:checked="true"
                 android:id="@+id/ReportsActivity.rbDaily" />
             <RadioButton
                 android:layout_width="match_parent"
