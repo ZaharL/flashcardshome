@@ -88,6 +88,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.MyDecksActivity" />
         </activity>
+        <activity
+            android:name=".ui.activities.StudyActivity"
+            android:label="@string/study_name"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.activities.MyDecksActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.MyDecksActivity" />
+        </activity>
 
     </application>
 

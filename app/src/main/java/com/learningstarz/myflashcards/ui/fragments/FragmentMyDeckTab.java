@@ -1,6 +1,5 @@
 package com.learningstarz.myflashcards.ui.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.learningstarz.myflashcards.R;
-import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.ui.activities.EditDeckActivity;
-import com.learningstarz.myflashcards.ui.activities.MyDecksActivity;
 import com.learningstarz.myflashcards.ui.components.adapters.MyDeckCardAdapter;
 
 import java.util.ArrayList;

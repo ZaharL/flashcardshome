@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/face_undecor"
+                android:textColor="@color/light_blue"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@id/CardStudy.etAuthor"
+                android:layout_toStartOf="@id/CardStudy.etAuthor"
+                android:text="@string/author"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/CardStudy.etAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="Lavysh Zakhar"
+                android:textColor="@color/light_gray"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/CardStudy.etTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/CardStudy.etAuthor"
+                android:textSize="16sp"
+                android:text="deck22"
+                android:textColor="@color/light_gray"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/CardStudy.etAuthor"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:textSize="16sp"
+                android:layout_toLeftOf="@id/CardStudy.etTitle"
+                android:layout_toStartOf="@id/CardStudy.etTitle"
+                android:text="@string/title"
+                android:textColor="@color/light_gray" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/btn_edit_circle"
+                android:drawablePadding="10dp"
+                android:layout_gravity="center"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="dlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglkdlfkjgl;dkjgkelrjglk"
+                android:textColor="@android:color/black" />
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
