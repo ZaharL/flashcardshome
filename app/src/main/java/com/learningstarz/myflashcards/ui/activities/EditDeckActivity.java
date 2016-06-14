@@ -20,6 +20,8 @@ import com.learningstarz.myflashcards.interfaces.TaskCompletable;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Deck;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Formatter;
 
@@ -101,23 +103,31 @@ public class EditDeckActivity extends AppCompatActivity implements TaskCompletab
                 Formatter urlCreator = new Formatter();
                 int ch = swtcAccess.isChecked() ? 1 : 0;
                 if (deckToEdit != null) {
-                    urlCreator.format(getString(R.string.url_update_deck),
-                            token,
-                            deckToEdit.getUid(),
-                            etTitle.getText().toString().replaceAll(" ", "%20"),
-                            etDescription.getText().toString().replaceAll(" ", "%20"),
-                            etKeyWords.getText().toString().replaceAll(" ", "%20"),
-                            ch,
-                            System.currentTimeMillis() / 1000);
+                    try {
+                        urlCreator.format(getString(R.string.url_update_deck),
+                                token,
+                                deckToEdit.getUid(),
+                                URLEncoder.encode(etTitle.getText().toString(), "UTF-8"),
+                                URLEncoder.encode(etDescription.getText().toString(), "UTF-8"),
+                                URLEncoder.encode(etKeyWords.getText().toString(), "UTF-8"),
+                                ch,
+                                System.currentTimeMillis() / 1000);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    urlCreator.format(getString(R.string.url_add_deck),
-                            token,
-                            Tools.createUID(),
-                            etTitle.getText().toString().replaceAll(" ", "%20"),
-                            etDescription.getText().toString().replaceAll(" ", "%20"),
-                            etKeyWords.getText().toString().replaceAll(" ", "%20"),
-                            ch,
-                            System.currentTimeMillis() / 1000);
+                    try {
+                        urlCreator.format(getString(R.string.url_add_deck),
+                                token,
+                                Tools.createUID(),
+                                URLEncoder.encode(etTitle.getText().toString(), "UTF-8"),
+                                URLEncoder.encode(etDescription.getText().toString(), "UTF-8"),
+                                URLEncoder.encode(etKeyWords.getText().toString(), "UTF-8"),
+                                ch,
+                                System.currentTimeMillis() / 1000);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 Tools.editUpdateDeck(EditDeckActivity.this, urlCreator.toString());
             }

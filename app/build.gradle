@@ -41,4 +41,6 @@ dependencies {
     compile('org.apache.httpcomponents:httpmime:4.3') {
         exclude module: "httpclient"
     }
+    compile 'com.nineoldandroids:library:2.4.0'
+
 }

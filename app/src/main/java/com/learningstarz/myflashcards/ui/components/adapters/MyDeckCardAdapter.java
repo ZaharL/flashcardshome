@@ -21,7 +21,7 @@ import com.learningstarz.myflashcards.data_storage.DataManager;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.ui.activities.CardsActivity;
-import com.learningstarz.myflashcards.ui.activities.MyDecksActivity;
+import com.learningstarz.myflashcards.ui.activities.StudyActivity;
 import com.learningstarz.myflashcards.ui.async_tasks.DeleteCardAsyncTask;
 
 import java.util.ArrayList;
@@ -103,7 +103,9 @@ public class MyDeckCardAdapter extends RecyclerSwipeAdapter<MyDeckCardAdapter.Si
         viewHolder.swipeLayout.getSurfaceView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO create study activity
+                Intent intent = new Intent(mContext, StudyActivity.class);
+                intent.putExtra(Tools.deckExtraTag, deck);
+                mContext.startActivity(intent);
             }
         });
 

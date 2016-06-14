@@ -34,6 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Formatter;
@@ -179,19 +181,27 @@ public class EditCardsActivity extends AppCompatActivity {
             } else {
                 Formatter urlCreator = new Formatter();
                 if (card != null) {
-                    urlCreator.format(getString(R.string.url_update_deck_card),
-                            card.getUid(),
-                            deck.getUid(),
-                            userToken,
-                            etQuestion.getText().toString(),
-                            etAnswer.getText().toString());
+                    try {
+                        urlCreator.format(getString(R.string.url_update_deck_card),
+                                card.getUid(),
+                                deck.getUid(),
+                                userToken,
+                                URLEncoder.encode(etQuestion.getText().toString(), "UTF-8"),
+                                URLEncoder.encode((etAnswer.getText().toString()), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    urlCreator.format(getString(R.string.url_add_deck_card),
-                            Tools.createUID(),
-                            deck.getUid(),
-                            userToken,
-                            etQuestion.getText().toString(),
-                            etAnswer.getText().toString());
+                    try {
+                        urlCreator.format(getString(R.string.url_add_deck_card),
+                                Tools.createUID(),
+                                deck.getUid(),
+                                userToken,
+                                URLEncoder.encode(etQuestion.getText().toString(), "UTF-8"),
+                                URLEncoder.encode(etAnswer.getText().toString(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 String url = urlCreator.toString();

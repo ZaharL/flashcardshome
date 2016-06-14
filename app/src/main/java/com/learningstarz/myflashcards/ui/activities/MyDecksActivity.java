@@ -1,11 +1,9 @@
 package com.learningstarz.myflashcards.ui.activities;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
@@ -31,24 +29,12 @@ import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.data_storage.DataManager;
 import com.learningstarz.myflashcards.interfaces.TaskCompletable;
 import com.learningstarz.myflashcards.tools.Tools;
-import com.learningstarz.myflashcards.types.Card;
 import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.types.User;
 import com.learningstarz.myflashcards.ui.components.NonSwipeableViewPager;
 import com.learningstarz.myflashcards.ui.fragments.FragmentMyDeckTab;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Formatter;
 
 /**
  * Created by ZahARin on 14.01.2016.
