@@ -1,23 +1,18 @@
 package com.learningstarz.myflashcards.ui.fragments;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.ViewAnimator;
 
 import com.learningstarz.myflashcards.R;
 import com.learningstarz.myflashcards.tools.Tools;
 import com.learningstarz.myflashcards.types.Deck;
 import com.learningstarz.myflashcards.ui.activities.StudyActivity;
-import com.learningstarz.myflashcards.ui.components.adapters.StudyCardsAdapter;
 
 /**
  * Created by ZahARin on 02.06.2016.
@@ -81,7 +76,6 @@ public class StudyCardFragment extends Fragment {
     }
 
     private void flipCard() {
-
         Log.d("MyLogs", "FLIP!");
         if (mShowingBack) {
             this.getChildFragmentManager().popBackStack();
@@ -101,6 +95,5 @@ public class StudyCardFragment extends Fragment {
                 .replace(R.id.CardFlipLayout_container, StudyCardBackFragment.newInstance(deck.getCard(page), deck))
                 .addToBackStack(null)
                 .commit();
-
     }
 }
